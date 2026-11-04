@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-04",
+  "upstream_base": "56a57d00a591360cf41bf21383915ee5bf357be5",
+  "version": "02.09.01.70",
+  "original_build_start_slice_export": "PASS",
+  "custom_build_start": "PASS",
+  "native_renderer_tests": [
+    "real render 20 and 30 mm",
+    "missing executable",
+    "syntax error and empty geometry",
+    "quotes and trailing backslash",
+    "spaces and Unicode in output path",
+    "cancel owned parent and child",
+    "destruction stops owned parent and child"
+  ],
+  "native_renderer_status": "PASS",
+  "renderer_version": "OpenSCAD 2021.01",
+  "manual_generate_30_10_5_place_undo": "USER PASS",
+  "cube_slice_metrics": "USER PASS: user screenshot",
+  "cube_layers": 100,
+  "cube_filament_g": 3.63,
+  "cube_total_time": "15m53s",
+  "screenshot": "cube20-user-slice.png",
+  "screenshot_sha256": "79B88613A567E6BE006DCCA78D364A4BBAD6B05E92E43CC2CDBF8D9C520812DD",
+  "original_dll_sha256": "18A290C5CF2A4C1C7C6063DB74E04BED1391B26E8AD2ACE93E983E3695E62281",
+  "custom_dll_sha256": "3CC4C838B34DEC58869155DE317EA638BA011871E6633554DFD3A9A8BE2FD3EB",
+  "authenticode": "NotSigned",
+  "gcode_byte_comparison": "NOT RUN",
+  "parametric_model_slice": "NOT RUN",
+  "gui_error_cancel_close_stale_tests": "NOT RUN",
+  "physical_p2s_ams": "NOT RUN",
+  "evidence_scope": "Manual GUI acceptance is user-confirmed; agent automation failed on FrameArrived/cached-element errors. Native tests and build are agent-run. No hardware result is inferred."
+}

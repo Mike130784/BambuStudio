@@ -287,6 +287,9 @@ set(SLIC3R_GUI_SOURCES
     GUI/IconManager.cpp
     GUI/IconManager.hpp
     GUI/MainFrame.cpp
+    GUI/Parametric/ParametricEditor.cpp
+    GUI/Parametric/ParametricEditor.hpp
+    GUI/Parametric/WindowsRenderJob.hpp
     GUI/MainFrame.hpp
     GUI/BBLTopbar.cpp
     GUI/BBLTopbar.hpp

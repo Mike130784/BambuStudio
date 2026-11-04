@@ -1,3 +1,5 @@
+> **Custom Edition development branch:** local parametric OpenSCAD editor prototype, based on official Bambu Studio 2.9.1. See [custom-edition/README.md](custom-edition/README.md) for scope, build instructions, test evidence and the next checkpoint. This is an independent development fork; physical P2S/AMS validation is still pending.
+
 ![image](https://user-images.githubusercontent.com/106916061/179006347-497d24c0-9bd6-45b7-8c49-d5cc8ecfe5d7.png)
 # BambuStudio
 Bambu Studio is a cutting-edge, feature-rich slicing software.  

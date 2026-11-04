@@ -1,4 +1,5 @@
 #include "MainFrame.hpp"
+#include "Parametric/ParametricEditor.hpp"
 #include "GLToolbar.hpp"
 #include <wx/panel.h>
 #include <wx/notebook.h>
@@ -3132,6 +3133,11 @@ void MainFrame::init_menubar_as_editor()
             [this](){return true; }, this);
 
         append_submenu(fileMenu, import_menu, wxID_ANY, _L("Import"), "");
+
+        append_menu_item(fileMenu, wxID_ANY, "Local parametric editor (prototype)...",
+            "Edit a trusted standalone SCAD model locally",
+            [this](wxCommandEvent&) { if (m_plater) show_parametric_editor(this, *m_plater); }, "", nullptr,
+            [this]() { return can_add_models(); }, this);
 
 
         wxMenu* export_menu = new wxMenu();
