@@ -145,12 +145,49 @@ class Editor final : public DPIDialog {
         return result;
     }
 
+    wxColour feedback_colour() const {
+        if (wxGetApp().dark_mode()) {
+            if (m_feedback == Feedback::Ready) return wxColour("#65D991");
+            if (m_feedback == Feedback::Error) return wxColour("#FF8D94");
+        }
+        return StateColor::darkModeColorFor(m_feedback == Feedback::Ready ? ThemeColor::BrandGreen :
+            m_feedback == Feedback::Error ? ThemeColor::Danger : ThemeColor::TextPrimary);
+    }
+    StaticBox *divider() {
+        auto line = new StaticBox(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 1)));
+        line->SetMinSize(FromDIP(wxSize(-1, 1)));
+        line->SetBorderWidth(0); line->SetBackgroundColor(ThemeColor::Grey350);
+        return line;
+    }
     void apply_theme() {
-        SetBackgroundColour(StateColor::darkModeColorFor(ThemeColor::White));
-        m_parameters->SetBackgroundColour(GetBackgroundColour());
         wxGetApp().UpdateDlgDarkUI(this);
-        m_state_title->SetForegroundColour(StateColor::darkModeColorFor(m_feedback == Feedback::Ready ? ThemeColor::BrandGreen :
-            m_feedback == Feedback::Error ? ThemeColor::Danger : ThemeColor::TextPrimary));
+        const auto surface = StateColor::darkModeColorFor(ThemeColor::White);
+        const auto card = StateColor::darkModeColorFor(ThemeColor::Grey200);
+        const auto text = StateColor::darkModeColorFor(ThemeColor::TextPrimary);
+        SetBackgroundColour(surface);
+        m_parameters->SetBackgroundColour(surface);
+        // StaticBox paints its fill separately from the native window background.
+        // Set both label backgrounds explicitly; inherited system grey stays light on Windows.
+        auto theme_children = [&](auto &&self, wxWindow *parent) -> void {
+            for (auto child : parent->GetChildren()) {
+                if (dynamic_cast<StaticBox*>(child)) child->SetBackgroundColour(surface);
+                if (dynamic_cast<wxStaticText*>(child)) {
+                    child->SetBackgroundColour(parent == m_result_panel ? card : surface);
+                    child->SetForegroundColour(text);
+                }
+                self(self, child);
+            }
+        };
+        theme_children(theme_children, this);
+        m_result_panel->SetBackgroundColour(surface); // rounded corners match the dialog
+        m_status->SetForegroundColour(text);
+        m_state_title->SetForegroundColour(feedback_colour());
+        const auto secondary = wxGetApp().dark_mode() ? wxColour("#ADB0B6") : ThemeColor::TextMuted;
+        m_model_note->SetForegroundColour(secondary); m_settings_hint->SetForegroundColour(secondary);
+        for (auto control : {m_generate, m_place, m_cancel, m_close, m_open_source, m_open_renderer}) {
+            control->SetTextColor(StateColor(std::make_pair(wxGetApp().dark_mode() ? wxColour("#B7B7BE") : ThemeColor::TextDisabled, int(StateColor::Disabled)),
+                std::make_pair(control == m_place ? ThemeColor::WhiteFixed : ThemeColor::TextPrimary, int(StateColor::Normal))));
+        }
         Refresh();
     }
 
@@ -170,8 +207,7 @@ class Editor final : public DPIDialog {
             feedback == Feedback::Working ? ui("Generating model", "Model wordt gegenereerd") :
             feedback == Feedback::Error ? ui("Check the model or input", "Controleer het model of de invoer") :
             ui("Generate a new result", "Genereer een nieuw resultaat"));
-        m_state_title->SetForegroundColour(StateColor::darkModeColorFor(feedback == Feedback::Ready ? ThemeColor::BrandGreen :
-            feedback == Feedback::Error ? ThemeColor::Danger : ThemeColor::TextPrimary));
+        m_state_title->SetForegroundColour(feedback_colour());
         Layout();
     }
     void busy(bool active) {
@@ -363,7 +399,7 @@ public:
         subtitle->SetFont(Label::Body_13);
         subtitle->Wrap(FromDIP(680));
         layout->Add(subtitle, 0, wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, pad);
-        layout->Add(new wxStaticLine(this), 0, wxEXPAND);
+        layout->Add(divider(), 0, wxEXPAND);
 
         auto section = [this, layout, pad](const wxString &text) {
             auto label = new wxStaticText(this, wxID_ANY, text);
@@ -420,7 +456,7 @@ public:
         m_settings_hint = new wxStaticText(this, wxID_ANY, ui("Choose OpenSCAD once. Paths are remembered locally.", "Kies OpenSCAD eenmalig. Paden worden lokaal onthouden."));
         m_settings_hint->SetFont(Label::Body_12);
         layout->Add(m_settings_hint, 0, wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, pad);
-        layout->Add(new wxStaticLine(this), 0, wxEXPAND);
+        layout->Add(divider(), 0, wxEXPAND);
 
         auto buttons = new wxBoxSizer(wxHORIZONTAL);
         m_generate = button(this, ui("Generate model", "Model genereren"));

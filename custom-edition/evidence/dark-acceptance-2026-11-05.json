@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-05",
+  "parent_commit": "9184ce3eaecc0c30181b0d0520ab4dde78df5de4",
+  "tested_dll_sha256": "D1688AA69F215A47E890478D9A2C148144F4FF3B896A3487DCA31BF6DDF68953",
+  "authenticode": "NotSigned",
+  "executor": "agent, native GUI visual inspection plus build/source checks",
+  "build_log": "custom-20261105-141101-BuildApp.log",
+  "main_install_log": "dark-install-main.log",
+  "cases": {
+    "dark_neutral_with_parameters": "PASS: consistent backgrounds, readable labels and card",
+    "dark_invalid_step_error": "PASS: light red heading and readable body, placement disabled",
+    "dark_render_success": "PASS: 30x10x5 mm; light green heading; active place button",
+    "dark_disabled_place_button": "PASS: readable disabled caption",
+    "dark_busy_and_cancel": "PASS: consistent card, standard native progress bar, stop action returns neutral state",
+    "light_empty_editor_regression": "PASS: readable heading/body, fields and disabled buttons",
+    "dark_empty_editor_default_account_configuration": "PASS: original reported empty state now readable; normal dark build left open"
+  },
+  "scope": "Parametric editor colors, dividers and native label backgrounds only; no geometry, runner, profile or account logic changed",
+  "source_sha256": "aa7bc4ee794fac991fa1a7b940af243b960edfcb446a0447549088b8acc0b319",
+  "bambu_account_login": {
+    "status": "USER PASS",
+    "basis": "User explicitly reported successful login; authenticated homepage was subsequently observed. Agent did not perform authentication."
+  },
+  "not_run": [
+    "live light/dark switch while dialog remains open",
+    "additional DPI/display scales",
+    "full slicing repeat for this color-only change",
+    "physical P2S/AMS qualification or print"
+  ],
+  "notes": [
+    "Build first staged separately, then installed into the normal custom-install path at user request.",
+    "Default account configuration was not edited. Appearance tests used the existing dedicated test configuration.",
+    "Screenshots were inspected in the tool transcript; no account settings or tokens published."
+  ]
+}
