@@ -1,6 +1,10 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuwste checkpoint: camera blijft geblokkeerd in eigen builds
+## Nieuwste checkpoint: lokale camera als kandidaat, printautorisatie apart
+
+Aanvullende broninspectie bevestigt een lokale RTSP(S)-route in Home Assistant en een bestaande lokale route in onze fork die bij cloudprinters normaal niet gekozen wordt. Een expliciete lokale camerakeuze is een gerichte kandidaat; actuele printerinstelling en echte stream zijn nog NOT RUN. Een lokaal codecertificaat verleent niet automatisch Bambu-autorisatie; ondertekenproef NOT RUN. De door de gebruiker getoonde printblokkade is USER EVIDENCE. Zie de aanvulling in [cameraonderzoek](CAMERA-DIAGNOSTIC.md). Geen productcode, certificaatvertrouwen of printerinstellingen gewijzigd.
+
+## Eerder checkpoint: camera blijft geblokkeerd in eigen builds
 
 Cloud-livebeeld geeft **FAIL: 1:403** in de custom build én in de apart bewaarde ongewijzigde upstream-build. Officiële Studio van dezelfde release toont livebeeld (USER PASS en agentwaarneming); Handy is USER PASS. Daarmee is de fout onafhankelijk van de editorwijzigingen gereproduceerd. Software-identiteit/autorisatie is een onderbouwde hypothese, geen bewezen specifieke oorzaak of opgeloste fout.
 
