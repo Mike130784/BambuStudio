@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-05",
+  "tested_functional_commit": "2f05bc7a8e4c089a0adbe50363062872bb74fa97",
+  "tested_dll_sha256": "3CC4C838B34DEC58869155DE317EA638BA011871E6633554DFD3A9A8BE2FD3EB",
+  "executor": "agent, native GUI plus process/file verification",
+  "cases": {
+    "missing_renderer": "PASS: clear message; Place disabled",
+    "scad_syntax_error": "PASS: real OpenSCAD failure; Place disabled; no STL; no renderer remains",
+    "empty_scad_geometry": "PASS: real OpenSCAD empty-object failure; Place disabled; no STL; no renderer remains",
+    "gui_deadline": "PASS: real editor timer with controlled sleeper, not OpenSCAD",
+    "existing_project_preservation": "PASS"
+  },
+  "timeout_probe": {
+    "purpose": "Test-only controlled process; no geometry and no heavy CPU work",
+    "duration_seconds": 60.097,
+    "exit_code": 1,
+    "result_exists": false,
+    "log_bytes": 0,
+    "executable_sha256": "B96ADADCE7076EE316C1247B4276070500231E7CE5B92D7355709CBE2196C068",
+    "natural_exit_seconds": 90,
+    "note": "GUI terminated the probe around 60 seconds, before natural exit. Empty log excludes the log-size limit as trigger."
+  },
+  "preservation": {
+    "status": "PASS",
+    "checks": {
+      "meshes": true,
+      "scene_graph": true,
+      "units": true,
+      "objects": true,
+      "settings": true
+    },
+    "object_count": 1,
+    "actual_sha256": "2be4ced28e70f2b146612c4cf9eb1f851697bed2b88aadde81c13a27625d56b2",
+    "scope": "Meshes, units, component/build references and transforms, object count, all project settings. UUID-only metadata excluded."
+  },
+  "project_plate_switch_other_instance": "NOT RUN: single_instance=false in the dedicated test configuration; normal modal editor blocks same-window changes",
+  "physical_p2s_ams": "NOT RUN",
+  "app_source_changes": "NONE",
+  "next_work": "Renderer/model path persistence, richer parameter types, Customizer subset after separate project-switch guard qualification."
+}

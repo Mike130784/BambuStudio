@@ -15,13 +15,17 @@ De op 4 november gebouwde app is opnieuw gebruikt, na controle van de DLL-hash. 
 | Editor sluiten tijdens actieve render | PASS: hoofdvenster blijft bruikbaar, nul achtergebleven OpenSCAD-processen |
 | Bestaande kubus na alle fout-/annuleerproeven | PASS: geometrie, build-transformaties en alle projectinstellingen gelijk; één object |
 | Parametrisch blok op lege plaat plaatsen en slicen/exporteren | PASS: één object, 30×10×5 mm, 25 lagen, 1,03 g, 9m44s totaal; CRC/MD5 goed |
+| Ontbrekende renderer | PASS: duidelijke melding, plaatsen geblokkeerd |
+| Syntaxisfout en lege SCAD-geometrie via echte OpenSCAD | PASS: foutafhandeling, geen STL/plaatsactie en geen achtergebleven renderer |
+| Echte GUI-deadline met gecontroleerde wachtprobe | PASS: beëindigd na 60,097 s; log leeg; geen STL; plaatsen geblokkeerd |
+| Bestaand parametrisch project na deze extra fouten | PASS: mesh, units, component-/buildreferenties en transformaties, objectaantal en alle projectinstellingen gelijk; UUID-only metadata uitgezonderd |
 
 Zie [bewijsregistratie](evidence/acceptance-2026-11-05.json) en [reproduceerbare teststappen](GUI-CHECKS.md). De eigen proefmodellen gebruiken geen externe dependencies. De oorspronkelijke baseline en zijn uploads blijven apart bewaard. Er zijn geen printeropdrachten verzonden.
 
 ## Volgende stap
 
-1. Rond de resterende foutscenario's afzonderlijk af: echte GUI-time-out van 60 s en ontbrekende renderer/syntaxisfout/lege output via de GUI. Native fout-/procesboomtests zijn al PASS; blijf de bewijssoorten scheiden.
-2. Test project-/plaatwijziging via een andere instantie tijdens render, indien die route in deze build beschikbaar is; controleer dat het resultaat niet stil in een andere bestemming wordt ingevoegd.
+1. De vier extra GUI-foutscenario's zijn nu afgerond; zie [aanvullend foutenbewijs](evidence/failure-acceptance-2026-11-05.json). De time-out gebruikte een transparante testprobe, geen echte OpenSCAD-render; de GUI-timer, processtarter en beëindiging zijn de normale productieroute.
+2. Project-/plaatwijziging via een andere instantie blijft NOT RUN. De dedicated testconfiguratie heeft `single_instance=false`, zodat die route niet is aangeboden; dezelfde-windowwijzigingen worden door de modale editor geblokkeerd. Test de andere-instantieroute later expliciet met een afzonderlijke configuratie en behoud de importbewaking.
 3. Pak concrete fouten aan vóór uitbreiding. Daarna volgen het onthouden van renderer/modelpad, meer parametertypes en een gedocumenteerde Customizer-subset volgens de roadmap. De huidige proef vereist nog een `.scad.json`-schema en getalparameters.
 4. Echte P2S-/AMS 2 Pro-verbinding, slots, materiaalwissels en eventuele testprint blijven apart en NOT RUN. Een printopdracht vraagt een afzonderlijke expliciete opdracht.
 
