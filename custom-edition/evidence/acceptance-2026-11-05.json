@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-05",
+  "tested_commit": "2f05bc7a8e4c089a0adbe50363062872bb74fa97",
+  "tested_dll_sha256": "3CC4C838B34DEC58869155DE317EA638BA011871E6633554DFD3A9A8BE2FD3EB",
+  "executor": "agent: native GUI actions and file/process checks",
+  "cases": {
+    "width_minus_one_rejected_place_disabled": "PASS",
+    "valid_width_30_renders_30_10_5": "PASS",
+    "changing_width_30_to_31_disables_previous_result": "PASS",
+    "changed_source_rejected_at_place": "PASS",
+    "changed_schema_rejected_at_place": "PASS",
+    "cancel_active_render_no_remaining_renderer": "PASS",
+    "close_editor_during_active_render_no_remaining_renderer": "PASS",
+    "existing_cube_mesh_transforms_all_project_settings_preserved": "PASS",
+    "place_one_parametric_block_and_slice_export": "PASS"
+  },
+  "safety_project": {
+    "status": "PASS",
+    "mesh_identical": true,
+    "project_settings_identical": true,
+    "changed_setting_keys": [],
+    "build_transforms_identical": true,
+    "object_count": 1,
+    "project_sha256": "8ca94f6d05cd9fefb7bb7ae374a4912c1721377310f92c7e2a583e96899c3ef7"
+  },
+  "parametric_slice": {
+    "dimensions_mm": [
+      30.0,
+      10.0,
+      5.0
+    ],
+    "object_count": 1,
+    "layers": 25,
+    "filament_weight_g": 1.03,
+    "model_time": "2m 42s",
+    "total_time": "9m 44s",
+    "printer": "Bambu Lab P2S 0.4 nozzle",
+    "process": "0.20mm Standard @BBL P2S",
+    "filament": [
+      "Bambu PLA Basic @BBL P2S"
+    ],
+    "zip_crc": "PASS",
+    "gcode_md5": "PASS"
+  },
+  "artifacts": [
+    {
+      "file": "parametric-block30-p2s-20261105.3mf",
+      "sha256": "669940e524204ea8d9eddc1e1b3187ba42233997ec30930ea88c77c2eae85db7"
+    },
+    {
+      "file": "parametric-block30-p2s-20261105.gcode.3mf",
+      "sha256": "39d2cc79bbbfa340c949d551d0c4fbdcffeb3092880be70090a26d047af4df68"
+    },
+    {
+      "file": "safety-after-cancel-20261105.3mf",
+      "sha256": "8ca94f6d05cd9fefb7bb7ae374a4912c1721377310f92c7e2a583e96899c3ef7"
+    }
+  ],
+  "not_run": [
+    "GUI 60-second timeout",
+    "GUI missing renderer / syntax error / empty model (native tests previously PASS)",
+    "project/plate switch through another instance during rendering",
+    "physical P2S and AMS tests"
+  ],
+  "notes": [
+    "No source changes or rebuild required for this checkpoint.",
+    "Screenshots and accessibility states were observed in the session; process counts and saved projects were checked separately.",
+    "A screenshot of successful slicing is not a physical print result."
+  ]
+}

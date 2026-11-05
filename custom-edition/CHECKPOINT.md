@@ -1,29 +1,39 @@
-# Hervatten op donderdag 5 november 2026
+# Checkpoint — donderdag 5 november 2026
 
-## Afgerond
+## Nieuw geverifieerd
 
-De eerste lokale parametrische editor is gebouwd en handmatig geaccepteerd: getalparameter wijzigen, 30×10×5 mm genereren, één model toevoegen en Undo met behoud van de bestaande kubus. De gebruiker heeft alle vier stappen bevestigd. Daarna bevestigt een screenshot dat de oorspronkelijke kubus in de custom app dezelfde zichtbare sliceresultaten geeft: 100 lagen, 3,63 g en 15m53s totaal.
+De op 4 november gebouwde app is opnieuw gebruikt, na controle van de DLL-hash. De functionele broncode is ongewijzigd sinds commit `2f05bc7a8e4c089a0adbe50363062872bb74fa97`. Er was geen nieuwe build nodig. Alle hieronder genoemde GUI-proeven zijn vandaag door de agent uitgevoerd; de handmatige acceptatie van gisteren blijft afzonderlijk als USER PASS geregistreerd.
 
-De originele baseline en custom build staan apart. Er is nog geen printergerichte release of installer gepubliceerd. De Windows-app gebruikt dezelfde upstream-versienummering; de custom functie is herkenbaar aan het extra editor-menu. Zie de DLL-hashes in de bewijsregistratie om de twee lokale builds te onderscheiden.
+| Proef | Resultaat |
+|---|---|
+| Breedte −1 | PASS: foutmelding, plaatsen uitgeschakeld |
+| Breedte 30 renderen | PASS: 30×10×5 mm |
+| Breedte na render veranderen naar 31 | PASS: oud resultaat direct niet plaatsbaar |
+| Bronbestand na render veranderen | PASS: plaatsactie geweigerd; opnieuw genereren vereist |
+| Schema na render veranderen | PASS: plaatsactie geweigerd; opnieuw genereren vereist |
+| Actieve render annuleren | PASS: geen plaatsactie, nul achtergebleven OpenSCAD-processen |
+| Editor sluiten tijdens actieve render | PASS: hoofdvenster blijft bruikbaar, nul achtergebleven OpenSCAD-processen |
+| Bestaande kubus na alle fout-/annuleerproeven | PASS: geometrie, build-transformaties en alle projectinstellingen gelijk; één object |
+| Parametrisch blok op lege plaat plaatsen en slicen/exporteren | PASS: één object, 30×10×5 mm, 25 lagen, 1,03 g, 9m44s totaal; CRC/MD5 goed |
 
-## Morgen eerst
+Zie [bewijsregistratie](evidence/acceptance-2026-11-05.json) en [reproduceerbare teststappen](GUI-CHECKS.md). De eigen proefmodellen gebruiken geen externe dependencies. De oorspronkelijke baseline en zijn uploads blijven apart bewaard. Er zijn geen printeropdrachten verzonden.
 
-1. Gebruik de bestaande custom testbuild met de aparte testdatamap; lees eerst dit checkpoint en controleer branch/werkmap. Een nieuwe volledige build is alleen nodig bij bronwijzigingen of een concreet verificatiedoel.
-2. Test in de editor een ongeldige parameter, gewijzigde parameters na een geslaagde render en gewijzigde bron/schema: foutmelding of opnieuw genereren vereist, geen oud resultaat plaatsen en geen onverwachte plaatwijziging.
-3. Test annuleren en sluiten tijdens een langere render: alleen de eigen rendererboom stopt, geen crash en geen toegevoegd model. Native proceslevensduurtests zijn al PASS; deze GUI-flow blijft apart te bewijzen.
-4. Genereer het 30×10×5 mm-blok opnieuw, plaats het op een lege plaat of rangschik het naast bestaande objecten en slice met P2S 0.4 / 0.20mm Standard / Bambu PLA Basic. Bewaar project en slice-uitvoer.
-5. Noteer PASS/FAIL/NOT RUN en uitvoerder per test. Pak concrete fouten aan voordat meer parametertypes of modelondersteuning worden toegevoegd.
+## Volgende stap
 
-Live printer-/AMS-tests zijn een volgende fase; geen printopdracht zonder afzonderlijke expliciete opdracht. Presetbeheer en een algemene Customizer-parser blijven op de roadmap.
+1. Rond de resterende foutscenario's afzonderlijk af: echte GUI-time-out van 60 s en ontbrekende renderer/syntaxisfout/lege output via de GUI. Native fout-/procesboomtests zijn al PASS; blijf de bewijssoorten scheiden.
+2. Test project-/plaatwijziging via een andere instantie tijdens render, indien die route in deze build beschikbaar is; controleer dat het resultaat niet stil in een andere bestemming wordt ingevoegd.
+3. Pak concrete fouten aan vóór uitbreiding. Daarna volgen het onthouden van renderer/modelpad, meer parametertypes en een gedocumenteerde Customizer-subset volgens de roadmap. De huidige proef vereist nog een `.scad.json`-schema en getalparameters.
+4. Echte P2S-/AMS 2 Pro-verbinding, slots, materiaalwissels en eventuele testprint blijven apart en NOT RUN. Een printopdracht vraagt een afzonderlijke expliciete opdracht.
 
-## Lokale werkomgeving bij dit checkpoint
+Een printergerichte custom release is nog niet gekwalificeerd. Bewaar de ongewijzigde baseline; geen reset/clean/force-push of stil conflict oplossen.
 
+## Lokale hervathulp
+
+- Branch: `custom/parametric-editor-v2.9.1`; fork `Mike130784/BambuStudio`; upstream `bambulab/BambuStudio`.
 - Bronwerkmap: `outputs/BambuStudio-Custom/source-release` in de oorspronkelijke Codex-projectmap.
-- Branch: `custom/parametric-editor-v2.9.1`; fork: `Mike130784/BambuStudio`; upstream: `bambulab/BambuStudio`.
-- Bewaarde originele build: `D:\bsc291\baseline-original`; oorspronkelijke installatie ook in `D:\bsc291\install`.
-- Custom app: `D:\bsc291\custom-install\bambu-studio.exe`; aparte testdata: `D:\bsc291\custom-data`.
-- Startbestand in lokaal project: `Start-Custom-Test.cmd`.
-- Volledige lokale logs, audits en hashes staan buiten de Git-repository in `outputs/BambuStudio-Custom/evidence`.
-- Computerbediening gaf FrameArrived-timeouts en cached-element-fouten. De app bleef reageren; de gebruiker heeft de GUI-proeven uitgevoerd. Verwar die gereedschapsfout niet met een bewezen appcrash.
+- Origineel bewaard: `D:\bsc291\baseline-original`; custom app: `D:\bsc291\custom-install\bambu-studio.exe`.
+- Aparte custom testdata: `D:\bsc291\custom-data`; startbestand in lokaal project `Start-Custom-Test.cmd`.
+- Volledige lokale evidence: `outputs/BambuStudio-Custom/evidence`. Nieuwe bestanden: `editor-acceptance-20261105.json`, `gui-safety-preservation-20261105.json`, `gui-cancel-20261105.json`, `gui-close-20261105.json`, `safety-after-cancel-20261105.3mf`, `parametric-block30-p2s-20261105.3mf` en bijbehorende `.gcode.3mf`.
+- De computerbediening werkte vandaag via screenshotcoördinaten en toetsenbord. AX-elementacties gaven nog cached-element-fouten; gebruik dat niet als appcrashdiagnose. OpenSCAD werd afzonderlijk gekozen, niet meegebundeld. Binaries zijn Authenticode: NotSigned.
 
-Deze machinepaden zijn een lokale hervathulp, geen vereisten voor een nieuwe clone. Houd lokale instellingen, caches, plug-ins, binaries en originele ZIP-uploads buiten commits. Geen reset/clean/force-push of stil conflict oplossen. Bewaar de ongewijzigde baseline.
+Machinepaden zijn een hervathulp, geen vereisten voor een nieuwe clone. Lokale instellingen, caches, plug-ins, binaries en originele ZIP-uploads blijven buiten Git.
