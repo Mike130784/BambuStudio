@@ -31,6 +31,7 @@
 #include <locale>
 #include <chrono>
 #include "WindowsRenderJob.hpp"
+#include "CustomizerParameters.hpp"
 
 namespace Slic3r::GUI {
 #ifdef _WIN32
@@ -69,7 +70,7 @@ fs::path path_of(const wxString &text) { return fs::path(std::string(text.ToUTF8
 
 class Editor final : public DPIDialog {
     enum class Feedback { Neutral, Working, Ready, Error };
-    struct Field { std::string name; double minimum, maximum; wxTextCtrl *value; TextInput *control; };
+    struct Field { std::string name; double minimum, maximum, step; wxTextCtrl *value; TextInput *control; };
     TextInput *m_renderer, *m_source;
     Button *m_generate, *m_place, *m_cancel, *m_close, *m_open_source, *m_open_renderer;
     wxStaticText *m_status, *m_state_title, *m_model_note, *m_empty, *m_settings_hint;
@@ -83,7 +84,7 @@ class Editor final : public DPIDialog {
     fs::path m_source_path, m_schema_path, m_directory, m_result;
     std::string m_source_bytes, m_schema_bytes, m_mesh_bytes;
     std::chrono::steady_clock::time_point m_started;
-    bool m_running = false, m_loading = false;
+    bool m_running = false, m_loading = false, m_has_schema = false;
     Feedback m_feedback = Feedback::Neutral;
 
     wxString renderer_path() const { return m_renderer->GetTextCtrl()->GetValue(); }
@@ -192,6 +193,9 @@ class Editor final : public DPIDialog {
             message(words("Could not start or control OpenSCAD. Check the selected application and try again.", "OpenSCAD kon niet worden gestart of aangestuurd. Controleer het gekozen programma en probeer opnieuw."), Feedback::Error);
         else message(error.what(), Feedback::Error);
     }
+    bool schema_unchanged() const {
+        return m_has_schema ? read_bounded(m_schema_path, 65536) == m_schema_bytes : !fs::exists(m_schema_path);
+    }
     void load_source(bool remember = true) {
         m_loading = true;
         invalidate(); m_fields.clear(); m_rows->Clear(true);
@@ -204,10 +208,20 @@ class Editor final : public DPIDialog {
             // False positives (including comments) are rejected, never silently evaluated.
             if (std::regex_search(m_source_bytes, std::regex(R"(\b(include|use|import|surface)\b)")))
                 throw std::runtime_error(words("Prototype accepts standalone SCAD only; dependencies are not supported yet.", "Dit model gebruikt externe bestanden. Deze eerste versie ondersteunt alleen zelfstandige SCAD-modellen."));
-            if (!fs::is_regular_file(m_schema_path))
-                throw std::runtime_error(words("This model needs a .scad.json parameter schema beside the SCAD file.", "Bij dit model ontbreekt het parameterschema. Plaats het bijbehorende .scad.json-bestand naast het model."));
-            m_schema_bytes = read_bounded(m_schema_path, 65536);
-            Json schema = Json::parse(m_schema_bytes);
+            // An existing sidecar always wins; invalid schemas never silently fall back.
+            m_has_schema = fs::exists(m_schema_path);
+            m_schema_bytes.clear();
+            Json schema;
+            if (m_has_schema) {
+                m_schema_bytes = read_bounded(m_schema_path, 65536);
+                schema = Json::parse(m_schema_bytes);
+            } else {
+                auto parameters = Json::array();
+                for (const auto &parameter : Parametric::read_customizer_parameters(m_source_bytes))
+                    parameters.push_back({{"name", parameter.name}, {"label", parameter.label}, {"type", "number"},
+                        {"default", parameter.initial}, {"min", parameter.minimum}, {"max", parameter.maximum}, {"step", parameter.step}});
+                schema = Json{{"version", 1}, {"parameters", parameters}};
+            }
             if (schema.at("version") != 1 || !schema.at("parameters").is_array() ||
                 schema.at("parameters").empty() || schema.at("parameters").size() > 32)
                 throw std::runtime_error(words("Schema requires version 1 and 1-32 numeric parameters.", "Het schema moet versie 1 en 1 tot 32 getalparameters bevatten."));
@@ -219,8 +233,10 @@ class Editor final : public DPIDialog {
                     throw std::runtime_error(words("Schema parameter name/type is invalid or duplicated.", "Een parameternaam of -type is ongeldig, of komt dubbel voor."));
                 double low = item.at("min").get<double>(), high = item.at("max").get<double>();
                 double initial = item.at("default").get<double>();
+                double step = item.value("step", 0.0);
                 if (!std::isfinite(low) || !std::isfinite(high) || !std::isfinite(initial) || low < -1e6 || high > 1e6 ||
-                    low > high || initial < low || initial > high)
+                    low > high || initial < low || initial > high || !std::isfinite(step) || step < 0 ||
+                    !Parametric::on_parameter_step(initial, low, step))
                     throw std::runtime_error(words("Schema contains an invalid numeric range/default.", "Een parameter heeft een ongeldig bereik of een ongeldige standaardwaarde."));
                 names.push_back(name);
                 const auto display = item.value("label", name);
@@ -234,6 +250,7 @@ class Editor final : public DPIDialog {
                 label->Wrap(FromDIP(360));
                 labels->Add(label);
                 auto range = new wxStaticText(m_parameters, wxID_ANY, wxString::FromUTF8(item.at("min").dump() + " - " + item.at("max").dump()));
+                if (step > 0) range->SetLabel(range->GetLabel() + ui("; step ", "; stap ") + wxString::FromUTF8(Json(step).dump()));
                 range->SetFont(Label::Body_12);
                 range->SetForegroundColour(StateColor::darkModeColorFor(ThemeColor::TextMuted));
                 labels->Add(range, 0, wxTOP, FromDIP(2));
@@ -250,12 +267,18 @@ class Editor final : public DPIDialog {
                     row->Add(unit_label, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(8));
                 }
                 m_rows->Add(row, 0, wxEXPAND | wxBOTTOM, FromDIP(14));
-                m_fields.push_back({name, low, high, value, control});
+                m_fields.push_back({name, low, high, step, value, control});
                 value->Bind(wxEVT_TEXT, [this](wxCommandEvent&) { if (!m_loading) { invalidate(); message(words("Parameters changed. Generate a new result.", "Parameters aangepast. Genereer een nieuw resultaat.")); } });
             }
             if (remember) remember_path("model_path", source_path());
-            m_model_note->SetLabel(wxString::Format(ui("%zu parameters - use a dot for decimals", "%zu parameters - gebruik een punt voor decimalen"), m_fields.size()));
+            m_model_note->SetLabel(wxString::Format(ui("%zu parameters - use a dot for decimals", "%zu parameters - gebruik een punt voor decimalen"), m_fields.size()) + (m_has_schema ? " (JSON)" : " (Customizer)"));
             message(words("Adjust the values and generate your model.", "Pas de waarden aan en genereer je model."));
+        } catch (const Parametric::CustomizerError &error) {
+            m_fields.clear(); m_rows->Clear(true);
+            message(std::string(wxString::Format(ui(
+                "Unsupported Customizer header at line %zu. Use numeric literals with // [min:max] or // [min:step:max], or supply a .scad.json schema.",
+                "Customizer-kop niet ondersteund op regel %zu. Gebruik getallen met // [min:max] of // [min:stap:max], of kies een model met .scad.json-schema."), error.line).ToUTF8()), Feedback::Error);
+            m_model_note->SetLabel(ui("No supported parameters loaded", "Geen ondersteunde parameters geladen"));
         } catch (const std::exception &error) {
             m_fields.clear(); m_rows->Clear(true);
             message(dynamic_cast<const Json::exception*>(&error) ? words("The parameter schema is invalid. Check the .scad.json file.", "Het parameterschema is ongeldig. Controleer het .scad.json-bestand.") : error.what(), Feedback::Error);
@@ -269,15 +292,16 @@ class Editor final : public DPIDialog {
         try {
             if (fs::absolute(path_of(source_path())) != m_source_path ||
                 read_bounded(m_source_path, 2 * 1024 * 1024) != m_source_bytes ||
-                read_bounded(m_schema_path, 65536) != m_schema_bytes)
+                !schema_unchanged())
                 throw std::runtime_error(words("Source/schema changed. Select the model again before rendering.", "Het model of schema is gewijzigd. Open het model opnieuw voordat je genereert."));
             Json values = Json::object();
             for (const auto &field : m_fields) {
                 auto text = std::string(field.value->GetValue().ToUTF8());
                 std::istringstream input(text); input.imbue(std::locale::classic());
                 double value; input >> value;
-                if (!input || !(input >> std::ws).eof() || !std::isfinite(value) || value < field.minimum || value > field.maximum)
-                    throw std::runtime_error(words("A parameter is not a finite number within its schema range.", "Een waarde is geen geldig getal binnen het aangegeven bereik."));
+                if (!input || !(input >> std::ws).eof() || !std::isfinite(value) || value < field.minimum || value > field.maximum ||
+                    !Parametric::on_parameter_step(value, field.minimum, field.step))
+                    throw std::runtime_error(words("A parameter is not a finite number within its schema range.", "Een waarde past niet bij het aangegeven bereik of de stapgrootte."));
                 // OpenSCAD Customizer parameter-set values are strings, including numbers.
                 values[field.name] = Json(value).dump();
             }
@@ -430,7 +454,7 @@ public:
             try {
                 if (m_running || m_mesh_bytes.empty() || fs::absolute(path_of(source_path())) != m_source_path ||
                     read_bounded(m_result, 20 * 1024 * 1024) != m_mesh_bytes ||
-                    read_bounded(m_source_path, 2 * 1024 * 1024) != m_source_bytes || read_bounded(m_schema_path, 65536) != m_schema_bytes)
+                    read_bounded(m_source_path, 2 * 1024 * 1024) != m_source_bytes || !schema_unchanged())
                     throw std::runtime_error(words("Source or result changed. Generate a new result first.", "Model of resultaat gewijzigd. Genereer eerst een nieuw resultaat."));
                 EndModal(wxID_OK);
             } catch (const std::exception &error) { fail(error); }
