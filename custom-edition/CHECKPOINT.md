@@ -1,6 +1,10 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuwste checkpoint: lokale camera als kandidaat, printautorisatie apart
+## Nieuwste checkpoint: lokale cameraverbinding praktisch PASS
+
+P2S 01.03.00.00: algemene Alleen LAN uit en aparte Alleen LAN Liveweergave aan, bevestigd met gebruikersfoto. Een afzonderlijke geauthenticeerde lokale RTSP(S)-proef geeft DESCRIBE/SETUP/PLAY 200 en 604 RTP-videopakketten in drie seconden. Geen printerbesturingsopdrachten of instellingen gewijzigd. Geen codecertificaat nodig voor deze verbinding. Decoder/integratie, stabiliteit en herverbinden blijven NOT RUN. Camera-servercertificaat is in deze geïsoleerde proef niet onafhankelijk gevalideerd; geen wijziging in Windows-vertrouwen. Printautorisatie blijft apart open. Zie [bewijs en grenzen](CAMERA-DIAGNOSTIC.md).
+
+## Eerder checkpoint: lokale camera als kandidaat, printautorisatie apart
 
 Aanvullende broninspectie bevestigt een lokale RTSP(S)-route in Home Assistant en een bestaande lokale route in onze fork die bij cloudprinters normaal niet gekozen wordt. Een expliciete lokale camerakeuze is een gerichte kandidaat; actuele printerinstelling en echte stream zijn nog NOT RUN. Een lokaal codecertificaat verleent niet automatisch Bambu-autorisatie; ondertekenproef NOT RUN. De door de gebruiker getoonde printblokkade is USER EVIDENCE. Zie de aanvulling in [cameraonderzoek](CAMERA-DIAGNOSTIC.md). Geen productcode, certificaatvertrouwen of printerinstellingen gewijzigd.
 

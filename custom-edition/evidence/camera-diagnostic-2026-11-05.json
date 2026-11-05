@@ -48,7 +48,7 @@
     }
   },
   "public_certificate_thumbprint": "56BE046A75251F95488AFAACF38863A5F9D1FF6A",
-  "conclusion": "Cloud camera failure also affects untouched self-built upstream baseline; not introduced by editor changes. Exact SDK/server denial reason unproven.",
+  "conclusion": "Cloud route fails in custom and untouched self-build. Independent authenticated local RTSP(S) connection succeeds and delivers video packets with LAN Only OFF. No decoded/integrated picture claimed.",
   "hypothesis": "Software identity/authorization is the leading explanation, supported by signed-versus-unsigned comparison and Bambu whitepaper; not a proven camera-specific root cause.",
   "camera_source_hashes": {
     "src/slic3r/GUI/MediaPlayCtrl.cpp": "bd66d54a649c0f8038ae2213edcf40e15ea8cae16d231ec8363f972f8faa6049",
@@ -61,14 +61,32 @@
   ],
   "not_run": [
     "authenticated SDK/server denial diagnostics",
-    "LAN camera connection",
     "send/start/pause/stop/axis/temperature/material commands from custom build",
-    "full AMS hardware qualification"
+    "full AMS hardware qualification",
+    "local camera decoded image, two-minute stability and reconnect",
+    "integrated custom local camera route"
   ],
   "notes": [
     "No printer control commands sent, no firmware/network/security changes. Existing print continued.",
     "No official application identity, private keys or certificates copied; public certificate metadata only compared.",
     "Encrypted application/network logs not decrypted or uploaded. No device identifiers, IP addresses, account identifiers, access codes, tokens or camera images in this report.",
     "Official Studio reopened after comparison; final view had a cached frame with a Play button, so continuous live playback after reopen is not claimed."
-  ]
+  ],
+  "local_camera_probe": {
+    "printer_firmware": "01.03.00.00 (user photo)",
+    "lan_only_mode": "OFF (user photo)",
+    "lan_only_liveview": "ON (user photo)",
+    "tcp_port_322": "PASS",
+    "tls_handshake": "PASS",
+    "tls_identity": "Device-local certificate not independently validated in isolated diagnostic; Windows trust store unchanged",
+    "rtsp_describe_status": 200,
+    "sdp_video_description": true,
+    "rtsp_setup_status": 200,
+    "rtsp_play_status": 200,
+    "video_rtp_packets_in_3_seconds": 604,
+    "authentication": "Existing single stored printer access code; not printed or stored in evidence",
+    "decoded_picture": "NOT RUN",
+    "integrated_custom_camera": "NOT RUN via local route; existing cloud route remains FAIL",
+    "cleanup": "Camera socket closed after probe; no print-control commands sent"
+  }
 }

@@ -48,3 +48,13 @@ De Home Assistant-vergelijking geeft een concretere lokale camerakandidaat. De [
 Onze MediaPlayCtrl.cpp bevat al een lokale route, maar de selectievoorwaarde bij regel 586 kiest deze alleen bij LAN-mode of ontbrekend remoteprotocol. Een cloudprinter met beide protocollen gaat daardoor normaal naar get_camera_url. Dit maakt een expliciete lokale camerakeuze een gerichte kandidaat. De bestaande lokale decoder loopt nog via BambuSource; of die eigen builds accepteert is **NOT RUN**, dus een gegarandeerde fix volgt niet uit deze broninspectie.
 
 Volgende afgebakende proef: controleer alleen de aparte liveview-schakelaar, lokale bereikbaarheid en een geauthenticeerde lokale stream. Houd de algemene LAN Only-modus ongewijzigd; de P2S-handleiding beschrijft dat volledige LAN Only cloud/Handy uitschakelt. Voeg pas na een werkende stream een expliciete lokale camerakeuze toe, met gemaskeerde toegangscode, geen geheime URL in logs en heldere foutmelding. Acceptatie: bewegend beeld gedurende minstens twee minuten, stop/start en herverbinden, Handy apart nog bruikbaar en nul printerbesturingsopdrachten. Alle lokale praktijkproeven staan nu **NOT RUN**.
+
+## Nieuwe praktische proef: lokale camera levert videodata
+
+Gebruikersfoto's bevestigen P2S **01.03.00.00**, algemene Alleen LAN **uit**, aparte Alleen LAN Liveweergave **aan**. De cameraschakelaar is dus beschikbaar en ingeschakeld; de eerdere melding dat deze niet gevonden was is hiermee opgelost.
+
+Een afzonderlijke lokale cameraclient op deze computer heeft de bestaande opgeslagen printertoegangscode gebruikt. TCP-poort 322 en TLS-handshake zijn PASS. Geauthenticeerde RTSP DESCRIBE, SETUP en PLAY geven elk **200**; de beschrijving bevat video. In drie seconden zijn **604 RTP-videopakketten** ontvangen. De verbinding is daarna gesloten. Geen beeldbestanden, toegangscodes, apparaatadressen of geheime URL's in de gepubliceerde registratie.
+
+De geïsoleerde proef accepteerde het lokale camera-TLS-certificaat zonder onafhankelijke identiteitsvalidatie; Windows-certificaatvertrouwen bleef ongewijzigd. Voor integratie moet certificaatvertrouwen expliciet worden afgehandeld. Dit servercertificaat is een andere rol dan het ondertekenen van onze applicatie.
+
+**Bewezen:** lokale geauthenticeerde camera levert videopakketten terwijl Alleen LAN uit staat, zonder eigen codeondertekeningscertificaat. **NOT RUN:** beeld decoderen, bewegend beeld in de fork, twee minuten stabiliteit, herverbinden en een aanvullende gelijktijdige Handy-proef. De printautorisatie is hierdoor niet opgelost. De volgende implementatiestap is een expliciete lokale camerakeuze met dezelfde bewaarde oorspronkelijke cloudroute en afgeschermde geheimen.
