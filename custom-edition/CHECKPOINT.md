@@ -1,6 +1,22 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuw geverifieerd
+## Nieuwste checkpoint: Bambu-interface en contextmenu
+
+Nieuwe Windows-build/install **PASS**. De editor gebruikt native Bambu-knoppen en invoervelden, Nederlandstalige labels, bereikcontrole, leesbare eenheden, voortgang en een expliciete groene plaatsknop. `Parametrisch model...` staat nu in Bestand en bovenaan het rechtermuisknopmenu op een object, de printplaat en het lege werkvlak. Herhaald openen geeft geen dubbele vermelding. Het maakt een nieuw SCAD-model; een geselecteerde STL wordt niet automatisch parametrisch of vervangen.
+
+Model- en OpenSCAD-pad worden lokaal in de eigen AppConfig-sectie bewaard. Beide paden en de standaardparameters zijn na een volledige appherstart teruggevonden. Er start geen automatische render of plaatsactie. Bestandskiezers, ongeldige invoer, genereren op 30x10x5 mm en ongeldig maken na parameterwijziging zijn **PASS**.
+
+Eenmalig plaatsen en P2S-slicen/exporteren zijn opnieuw **PASS**: één model van 30x10x5 mm, 25 lagen, 1,03 g, 2m42s modeltijd en 9m44s totaal. ZIP-CRC en G-code-MD5 zijn goed. Stoppen en sluiten tijdens echte actieve OpenSCAD-renders zijn opnieuw **PASS**, met nul resterende rendererprocessen. Opgeslagen plaat na deze proeven behoudt geometrie, transformaties, eenheden, objectaantal en alle projectinstellingen (UUID-only metadata uitgezonderd).
+
+- Geteste DLL SHA256: `439EDD1A1ADCBB64D11801AC71DE2A5512C1E9DDC7F9AB1BE0C850E116F462C2`; **Authenticode: NotSigned**.
+- Lokaal bouwlog: `custom-20261105-115238-BuildApp.log`. Bronhashes en bewijs: [UI-acceptatie](evidence/ui-acceptance-2026-11-05.json).
+- Originele baseline blijft bewaard. De vorige werkende custom versie staat daarnaast in `D:\bsc291\custom-before-ui-20261105`.
+- Lichte modus op de huidige schermschaal is visueel getest; donker thema en extra DPI-schalen zijn **NOT RUN**. Hardware P2S/AMS en echte print blijven **NOT RUN**.
+- Basale modelbewerking is als aparte toekomstige M1-M4-stappen opgenomen in [de roadmap](ROADMAP.md); nog geen implementatie.
+
+Volgende concrete stap: representatieve eigen SCAD-modellen en een beperkte Customizer-subset voorbereiden, met dezelfde controles en projectbehoud. Printerkwalificatie blijft afzonderlijk.
+
+## Eerdere proeven op de eerste editorbuild
 
 De op 4 november gebouwde app is opnieuw gebruikt, na controle van de DLL-hash. De functionele broncode is ongewijzigd sinds commit `2f05bc7a8e4c089a0adbe50363062872bb74fa97`. Er was geen nieuwe build nodig. Alle hieronder genoemde GUI-proeven zijn vandaag door de agent uitgevoerd; de handmatige acceptatie van gisteren blijft afzonderlijk als USER PASS geregistreerd.
 
@@ -26,7 +42,7 @@ Zie [bewijsregistratie](evidence/acceptance-2026-11-05.json) en [reproduceerbare
 
 1. De vier extra GUI-foutscenario's zijn nu afgerond; zie [aanvullend foutenbewijs](evidence/failure-acceptance-2026-11-05.json). De time-out gebruikte een transparante testprobe, geen echte OpenSCAD-render; de GUI-timer, processtarter en beëindiging zijn de normale productieroute.
 2. Project-/plaatwijziging via een andere instantie blijft NOT RUN. De dedicated testconfiguratie heeft `single_instance=false`, zodat die route niet is aangeboden; dezelfde-windowwijzigingen worden door de modale editor geblokkeerd. Test de andere-instantieroute later expliciet met een afzonderlijke configuratie en behoud de importbewaking.
-3. Pak concrete fouten aan vóór uitbreiding. Daarna volgen het onthouden van renderer/modelpad, meer parametertypes en een gedocumenteerde Customizer-subset volgens de roadmap. De huidige proef vereist nog een `.scad.json`-schema en getalparameters.
+3. De interface en het onthouden van paden zijn nu afgerond; zie het nieuwste checkpoint bovenaan. Daarna volgen meer parametertypes en een gedocumenteerde Customizer-subset volgens de roadmap. De huidige proef vereist nog een `.scad.json`-schema en getalparameters.
 4. Echte P2S-/AMS 2 Pro-verbinding, slots, materiaalwissels en eventuele testprint blijven apart en NOT RUN. Een printopdracht vraagt een afzonderlijke expliciete opdracht.
 
 Een printergerichte custom release is nog niet gekwalificeerd. Bewaar de ongewijzigde baseline; geen reset/clean/force-push of stil conflict oplossen.

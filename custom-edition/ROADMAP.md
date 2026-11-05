@@ -1,5 +1,20 @@
 # Roadmap en concrete acceptatie
 
+## Toegevoegd op verzoek: eenvoudige modelbewerking (toekomst)
+
+Doel: bruikbare basisbewerkingen in de slicer, met een overzichtelijke bediening zoals bij bekende 3D-programma's. Dit is toekomstplanning; er wordt geen volledige Blender-, Maya- of 3ds Max-omgeving gebouwd.
+
+| Stap | Functies | Voorwaarde |
+|---|---|---|
+| M1 | Verplaatsen, schalen, draaien, spiegelen, uitlijnen en snijden | Bestaande Bambu-tools hergebruiken en duidelijk bereikbaar maken |
+| M2 | Eenvoudige vormen toevoegen, gaten/uitsparingen en samenvoegen | Bestaande mesh-booleans benutten waar geschikt; afmetingen numeriek instelbaar |
+| M3 | Vlakken of vlakke groepen selecteren, verplaatsen en eenvoudig extruderen | Eerst beperkt tot geschikte, gevalideerde gesloten meshes; resultaat vooraf tonen |
+| M4 | Randen afschuinen/afronden | Alleen ondersteunde randen/topologie; ongeschikte modellen duidelijk weigeren |
+
+Werk altijd op een bewerkbare kopie met Undo/Redo en een expliciete toepasactie. Bewaar oorspronkelijke geometrie en SCAD-bron. Vrije meshbewerkingen worden niet automatisch terugvertaald naar SCAD-parameters. Test geslotenheid, oriëntatie, afmetingen, nieuwe zelfdoorsnijdingen, slicing en 3MF opslaan/heropenen vóór vrijgave. Deze functies komen na de huidige lokale editor en zijn nog niet geïmplementeerd.
+
+De huidige UI-stap omvat een Bambu-stijlvenster, lokaal onthouden renderer/modelpad en dezelfde ingang via Bestand en rechtermuisknopmenu. Een contextmenu maakt een gewone STL nog niet parametrisch.
+
 | Fase | Werk | Poort naar volgende stap |
 |---|---|---|
 | P0a — bron | Archieven bewaren, hashes, officiële revisie, licentie-inventaris en branch | Volledige bronvergelijking PASS |

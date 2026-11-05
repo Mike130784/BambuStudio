@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-05",
+  "parent_commit": "f4b2408186ab4964eaf4eeb757d6b6c7cfab1152",
+  "tested_dll_sha256": "439EDD1A1ADCBB64D11801AC71DE2A5512C1E9DDC7F9AB1BE0C850E116F462C2",
+  "authenticode": "NotSigned",
+  "executor": "agent: native GUI, saved project and process checks",
+  "build_log": "custom-20261105-115238-BuildApp.log",
+  "cases": {
+    "object_context_opens_same_editor": "PASS",
+    "plate_context_entry_once": "PASS",
+    "empty_canvas_context_repeated_no_duplicates": "PASS",
+    "file_menu_label": "PASS: observed Parametrisch model...",
+    "native_dutch_layout_readable_units_buttons": "PASS: current light theme and display scale",
+    "model_and_renderer_file_pickers": "PASS",
+    "paths_restore_after_full_application_restart": "PASS",
+    "reopen_schema_defaults_no_auto_render_or_place": "PASS",
+    "negative_width_rejected": "PASS",
+    "render_30x10x5": "PASS",
+    "parameter_change_invalidates_result": "PASS",
+    "generate_place_once_slice_export": "PASS",
+    "cancel_active_real_render": "PASS: active PIDs 5532/36076, zero remaining after stop",
+    "close_active_real_render": "PASS: active PIDs 39152/36480, zero remaining after Escape",
+    "project_preservation_after_stop_and_close": "PASS"
+  },
+  "preservation": {
+    "status": "PASS",
+    "checks": {
+      "meshes": true,
+      "scene_graph": true,
+      "units": true,
+      "objects": true,
+      "settings": true
+    },
+    "object_count": 1,
+    "actual_sha256": "1a227e850c134562ea143f48f88296758c7b569f275ce80701a65033e80ef6da",
+    "scope": "Meshes, units, component/build references and transforms, object count, all project settings. UUID-only metadata excluded."
+  },
+  "slice": {
+    "dimensions_mm": [
+      30.0,
+      10.0,
+      5.0
+    ],
+    "objects": 1,
+    "layers": 25,
+    "weight_g": 1.03,
+    "model_time": "2m 42s",
+    "total_time": "9m 44s",
+    "zip_crc": "PASS",
+    "gcode_md5": "PASS"
+  },
+  "source_hashes": {
+    "src/slic3r/GUI/Parametric/ParametricEditor.cpp": "837c7fbc2222c5f1384097f393b9cbebc87067a546a3c5ea858dc4dbc6271196",
+    "src/slic3r/GUI/Parametric/ParametricEditor.hpp": "85a9c9b52b668e30b74a496cbe8a509e20e44718abbdacb06e14bc1a0fd14d15",
+    "src/slic3r/GUI/GUI_Factories.cpp": "7cdbdc934ded227c9dbac68bf1e5d623ed7ec8d505b3464813c808c0ef619c49",
+    "src/slic3r/GUI/MainFrame.cpp": "ce5300b3c33e96e4670d5383b9ef968f8c75ceb6737e23bb32cff3c0a37fcddd"
+  },
+  "artifacts": [
+    {
+      "file": "ui-block30-p2s-20261105.3mf",
+      "sha256": "338fa43ef8752599dd987f2477d67342d45cee4e721cfdc1fae5a05dd685b0a6"
+    },
+    {
+      "file": "ui-block30-p2s-20261105.gcode.3mf",
+      "sha256": "ce3d61ae77b0b8f27d662c3efa9dd3858d7263ce0a0bda71a9e1feccce3c382f"
+    },
+    {
+      "file": "ui-after-stop-20261105.3mf",
+      "sha256": "1a227e850c134562ea143f48f88296758c7b569f275ce80701a65033e80ef6da"
+    }
+  ],
+  "not_run": [
+    "dark theme and additional DPI runtime",
+    "other-instance project/plate switch",
+    "physical P2S/AMS connection and print"
+  ],
+  "notes": [
+    "Context action creates a new local SCAD model; does not parametrize or replace a selected STL.",
+    "Previous runner/failure evidence applies to unchanged WindowsRenderJob; this report records the new GUI regression only.",
+    "Basic mesh editing remains future planning.",
+    "Models and binaries remain local, not uploaded to GitHub."
+  ]
+}

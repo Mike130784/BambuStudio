@@ -7,6 +7,7 @@
 #include "GUI_App.hpp"
 #include "I18N.hpp"
 #include "Plater.hpp"
+#include "Parametric/ParametricEditor.hpp"
 #include "ObjectDataViewModel.hpp"
 
 #include "OptionsGroup.hpp"
@@ -313,6 +314,14 @@ static const constexpr std::array<std::pair<const char *, const char *>, 3> SVG_
 static Plater* plater()
 {
     return wxGetApp().plater();
+}
+
+static void append_parametric_editor(wxMenu *menu, wxWindow *parent)
+{
+    append_menu_item(menu, wxID_ANY, parametric_editor_menu_label(),
+        _L("Create a local parametric model on the current plate"),
+        [parent](wxCommandEvent&) { if (auto current = plater()) show_parametric_editor(parent, *current); },
+        "", nullptr, []() { return plater() && plater()->can_add_model(); }, parent);
 }
 
 static ObjectList* obj_list()
@@ -1260,6 +1269,7 @@ MenuFactory::MenuFactory()
 
 void MenuFactory::create_default_menu()
 {
+    append_parametric_editor(&m_default_menu, m_parent);
     wxMenu* sub_menu = append_submenu_add_generic(&m_default_menu, ModelVolumeType::INVALID);
 #ifdef __WINDOWS__
     append_submenu(&m_default_menu, sub_menu, wxID_ANY, _L("Add Primitive"), "", "menu_add_part",
@@ -1320,6 +1330,8 @@ void MenuFactory::create_object_menu()
 
 void MenuFactory::create_bbl_object_menu()
 {
+    append_parametric_editor(&m_object_menu, m_parent);
+    m_object_menu.AppendSeparator();
     append_menu_item_fill_bed(&m_object_menu);
     // Object Clone
     append_menu_item_clone(&m_object_menu);
@@ -1549,6 +1561,8 @@ void MenuFactory::create_filament_action_menu(wxMenu* menu, int active_filament_
 void MenuFactory::create_plate_menu()
 {
     wxMenu* menu = &m_plate_menu;
+    append_parametric_editor(menu, m_parent);
+    menu->AppendSeparator();
     // select objects on current plate
     append_menu_item(menu, wxID_ANY, _L("Select All"), _L("select all objects on current plate"),
         [](wxCommandEvent&) {
@@ -2593,7 +2607,7 @@ void MenuFactory::update_object_menu()
 
 void MenuFactory::update_default_menu()
 {
-    for (auto& name : { _L("Add Primitive"), _L("Add New Plate") }) {
+    for (auto& name : { _L("Add Primitive"), _L("Add New Plate"), wxString("Parametric model..."), wxString("Parametrisch model...") }) {
         const auto menu_item_id = m_default_menu.FindItem(name);
         if (menu_item_id != wxNOT_FOUND)
             m_default_menu.Destroy(menu_item_id);

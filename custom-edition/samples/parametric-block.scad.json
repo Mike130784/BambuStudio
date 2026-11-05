@@ -1,8 +1,32 @@
 {
   "version": 1,
   "parameters": [
-    {"name": "width", "type": "number", "default": 20, "min": 1, "max": 200},
-    {"name": "depth", "type": "number", "default": 10, "min": 1, "max": 200},
-    {"name": "height", "type": "number", "default": 5, "min": 1, "max": 200}
+    {
+      "name": "width",
+      "type": "number",
+      "default": 20,
+      "min": 1,
+      "max": 200,
+      "label": "Breedte",
+      "unit": "mm"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "default": 10,
+      "min": 1,
+      "max": 200,
+      "label": "Diepte",
+      "unit": "mm"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "max": 200,
+      "label": "Hoogte",
+      "unit": "mm"
+    }
   ]
 }
