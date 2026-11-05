@@ -31,7 +31,7 @@ De huidige UI-stap omvat een Bambu-stijlvenster, lokaal onthouden renderer/model
 
 Geen uitbreiding van P1 start voordat P0b een werkende originele build oplevert. Live hardwaretests blijven apart: ze kunnen niet door een compilatie worden vervangen. Tot P0c is afgerond blijft printercompatibiliteit onbewezen en komt er geen custom printrelease.
 
-Cameraonderzoek 5 november: status en AMS-slots zijn alleen-lezen zichtbaar; H01/H02 zijn daarmee nog geen volledige hardwarekwalificatie. H07 is voor de expliciete lokale RTSPS-route op P2S 01.03.00.00 praktisch PASS, inclusief stop/start en herstart. [Bewijs](evidence/local-camera-acceptance-2026-11-05.json). Cloudcamera blijft FAIL; rechtstreeks printen is afzonderlijk geblokkeerd. H03-H06 en volledige printerkwalificatie blijven open.
+Cameraonderzoek 5 november: status en AMS-slots zijn alleen-lezen zichtbaar; H01/H02 zijn daarmee nog geen volledige hardwarekwalificatie. H07 is voor de expliciete lokale RTSPS-route op P2S 01.03.00.00 praktisch PASS, inclusief stop/start en herstart. [Bewijs](evidence/local-camera-acceptance-2026-11-05.json). Cloudcamera blijft FAIL; rechtstreeks printen is afzonderlijk geblokkeerd. De officiële Connect-overdracht en AMS-toewijzing in het voorbereidingsscherm zijn inmiddels PASS; Send/printstart en fysieke wissel blijven NOT RUN. Zie [Connect](CONNECT-HANDOFF.md). H03-H06 en volledige printerkwalificatie blijven open.
 
 ## Testmatrix
 

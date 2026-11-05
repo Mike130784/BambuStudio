@@ -81,6 +81,8 @@
 #include <dbt.h>
 #include <shlobj.h>
 #include <shellapi.h>
+#include <wx/msw/registry.h>
+#include "Connect/ConnectHandoff.hpp"
 #include <dwmapi.h>
 #endif // _WIN32
 #include <slic3r/GUI/CreatePresetsDialog.hpp>
@@ -3155,6 +3157,51 @@ void MainFrame::init_menubar_as_editor()
         append_menu_item(export_menu, wxID_ANY, _L("Export plate sliced file") + dots + "\t" + ctrl + "G", _L("Export current sliced file"),
             [this](wxCommandEvent&) { if (m_plater) wxPostEvent(m_plater, SimpleEvent(EVT_GLTOOLBAR_EXPORT_SLICED_FILE)); }, "menu_export_sliced_file", nullptr,
             [this](){return can_export_gcode(); }, this);
+
+#ifdef _WIN32
+        const bool connect_dutch = wxGetApp().current_language_code_safe().rfind("nl", 0) == 0;
+        append_menu_item(export_menu, wxID_ANY,
+            connect_dutch ? "Open huidige plaat in Bambu Connect..." : "Open current plate in Bambu Connect...",
+            connect_dutch ? "Controleer printer, plaat en AMS in Connect voordat je print." : "Review printer, plate and AMS in Connect before printing.",
+            [this, connect_dutch](wxCommandEvent&) {
+                if (!can_export_gcode()) return;
+                wxRegKey handler(wxRegKey::HKCR, "bambu-connect\\shell\\open\\command");
+                if (!handler.Exists()) {
+                    MessageDialog(this, connect_dutch
+                        ? "Bambu Connect is nog niet beschikbaar. Installeer de officiële app via https://wiki.bambulab.com/en/software/bambu-connect en probeer opnieuw."
+                        : "Bambu Connect is not available yet. Install the official app from https://wiki.bambulab.com/en/software/bambu-connect and try again.",
+                        "Bambu Connect", wxOK | wxICON_INFORMATION).ShowModal();
+                    return;
+                }
+                try {
+                    // Use the native sliced-plate export. A unique retained copy allows
+                    // Connect to import asynchronously; never overwrite a previous job.
+                    const auto root = boost::filesystem::path(data_dir()) / "connect-exports";
+                    boost::filesystem::create_directories(root);
+                    const auto directory = root / boost::filesystem::unique_path("plate-%%%%%%%%-%%%%%%%%");
+                    if (!boost::filesystem::create_directory(directory)) throw std::runtime_error("Cannot create handoff directory");
+                    const auto output = directory / "plate.gcode.3mf";
+                    const int plate_index = m_plater->get_partplate_list().get_curr_plate_index();
+                    const int result = m_plater->export_3mf(output,
+                        SaveStrategy::Silence | SaveStrategy::SplitModel | SaveStrategy::WithGcode | SaveStrategy::SkipModel,
+                        plate_index);
+                    if (result < 0 || !boost::filesystem::is_regular_file(output) || boost::filesystem::file_size(output) == 0)
+                        throw std::runtime_error("Sliced export failed");
+                    auto name = into_u8(m_plater->get_export_gcode_filename(".gcode.3mf", true));
+                    if (name.empty()) name = "Plate";
+                    const auto uri = ConnectHandoff::import_uri(into_u8(from_path(boost::filesystem::absolute(output))), name);
+                    // Public import-file protocol only. No shell, credentials, printer
+                    // commands, or automatic Send/Print action are involved here.
+                    const auto opened = reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", from_u8(uri).wc_str(), nullptr, nullptr, SW_SHOWNORMAL));
+                    if (opened <= 32) throw std::runtime_error("Connect launch failed");
+                } catch (const std::exception&) {
+                    MessageDialog(this, connect_dutch
+                        ? "De geslicede plaat kon niet in Bambu Connect worden geopend. Controleer de installatie en exporteer de plaat eventueel handmatig."
+                        : "The sliced plate could not be opened in Bambu Connect. Check the installation, or export the plate manually.",
+                        "Bambu Connect", wxOK | wxICON_WARNING).ShowModal();
+                }
+            }, "menu_export_sliced_file", nullptr, [this]() { return can_export_gcode(); }, this);
+#endif
 
         append_menu_item(export_menu, wxID_ANY, _L("Export all plate sliced file") + dots/* + "\tCtrl+G"*/, _L("Export all plate sliced file"),
             [this](wxCommandEvent&) { if (m_plater) wxPostEvent(m_plater, SimpleEvent(EVT_GLTOOLBAR_EXPORT_ALL_SLICED_FILE)); }, "menu_export_sliced_file", nullptr,

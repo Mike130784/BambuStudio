@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-05",
+  "parent_commit": "e6eab68a6049cf28470d1e9f25ecabf8cb783322",
+  "dll_sha256": "3D2BF297F5D0EFA91A37FD98584688F809F23E02E07026EC9306C7B7540394D8",
+  "authenticode": "NotSigned",
+  "build_log": "custom-20261105-222505-BuildApp.log",
+  "build_install": "PASS",
+  "source_hashes": {
+    "src/slic3r/GUI/MainFrame.cpp": "e66f1cb195638d12b0ea5ea41426bb14c7061e58cb5b68d5b22ee562070ba4ef",
+    "src/slic3r/GUI/Connect/ConnectHandoff.hpp": "c5d2a9e055a8023f3e925d0103a95dd5d48e63d889853b588e2758d29db69525",
+    "src/slic3r/GUI/MediaPlayCtrl.cpp": "154ff0a4af56a23a005d8b9fd4b154d8d833449e16461848b9aa9d5c99db8cb7",
+    "src/slic3r/GUI/MediaPlayCtrl.h": "2007f5ec449e5659b63f8784d43e4ea0cdb0ce893006674c5fdca4643b330eaf"
+  },
+  "official_interface": {
+    "source": "https://wiki.bambulab.com/en/software/bambu-connect",
+    "observed_in_official_wiki_browser": "2026-11-05",
+    "scheme": "bambu-connect://import-file",
+    "parameters": [
+      "encodeURIComponent(path)",
+      "encodeURIComponent(name)",
+      "version=1.0.0"
+    ]
+  },
+  "connect": {
+    "version": "2.5.0-beta.15",
+    "installed_exe_authenticode": "Valid",
+    "installer_sha256": "60008EEAF2CCAFC4767C3E510FA3B79326633C905F17512EE6C7137DCB35BB8F",
+    "installer_source": "https://public-cdn.bblmw.com/upgrade/bambu-connect/updates/versions/2.5.0-beta.15/bambu-connect-v2.5.0-beta.15-win32-x64.exe",
+    "installation_and_login": "USER PASS: installed and signed in by user; authenticated app and printer observed by agent",
+    "windows_protocol_registration": "PASS"
+  },
+  "cases": {
+    "native_uri_contract_tests": "11 PASS: official example, Windows paths, Unicode/reserved bytes, injection-neutral encoding, invalid input rejection",
+    "unsliced_menu_gate": "PASS: handoff disabled before slice",
+    "gui_slice": "PASS: P2S 0.4, 25 layers, 1.03 g, 9m44s",
+    "first_handoff_cancel": "PASS: Connect import confirmation appeared and was dismissed without import or print",
+    "repeated_handoff": "PASS: second unique package; same G-code MD5; original package retained",
+    "connect_import": "PASS: accepted native sliced package; P2S / Textured PEI Plate / PLA / 0.4 / 1.03 g / rounded 10m visible",
+    "printer_preflight": "PASS: printer selected in Send to print dialog; Send not clicked",
+    "ams_mapping_ui": "PASS: A1-A4 and external material displayed; A2 changed to A1 in preflight; dialog then cancelled",
+    "project_preservation": "PASS",
+    "original_fixture_bytes": "PASS: hash unchanged from earlier recorded fixture",
+    "normal_profile_camera_regression": "PASS: saved Local choice retained, Loading to Playing in normal profile; dark scene, no new movement/duration qualification"
+  },
+  "preservation_scope": "Meshes, units, component/build references and transforms, object count, all project settings. UUID-only metadata excluded.",
+  "preservation_checks": {
+    "meshes": true,
+    "scene_graph": true,
+    "units": true,
+    "objects": true,
+    "settings": true
+  },
+  "packages": [
+    {
+      "size": 49833,
+      "sha256": "9d79f3bf9700e062f9dfb21294f4cfa318de800057051286543f2ada61a29863",
+      "gcode_md5": "35ec45d8bc6e59fe062d066da241a94a",
+      "crc": "PASS",
+      "md5": "PASS",
+      "summary": [
+        "; model printing time: 2m 42s; total estimated time: 9m 44s",
+        "; total layer number: 25",
+        "; total filament weight [g] : 1.03"
+      ]
+    },
+    {
+      "size": 49833,
+      "sha256": "5726709b22028fe2803b768f0ed772ba7f2db39e4de6d5337e6948aea411a15a",
+      "gcode_md5": "35ec45d8bc6e59fe062d066da241a94a",
+      "crc": "PASS",
+      "md5": "PASS",
+      "summary": [
+        "; model printing time: 2m 42s; total estimated time: 9m 44s",
+        "; total layer number: 25",
+        "; total filament weight [g] : 1.03"
+      ]
+    }
+  ],
+  "not_run": [
+    "Send/upload/actual print start through Connect",
+    "physical filament changes or full AMS qualification",
+    "multi-plate or multi-material print",
+    "missing-handler and export failure runtime faults",
+    "actual Unicode-path import into Connect (URI encoding unit-tested)",
+    "non-Windows handoff",
+    "full editor safety suite repeated on this build"
+  ],
+  "notes": [
+    "Uses official separately installed signed Connect; no proprietary identity/certificate copied, no authorization check patched out.",
+    "Only current valid sliced plate exported via native export_3mf flags, to unique retained local connect-exports directories.",
+    "No auto Send or Print; no printer control commands or firmware/network/security settings changed.",
+    "No credentials, account/device identifiers, IP addresses, private URIs, screenshots or user projects published.",
+    "Actual print success remains unproven until user-authorized runtime print test.",
+    "Dedicated test app closed after project Save As. Normal-profile build reopened; Connect left at imported test-plate preview after Cancel, never Send."
+  ]
+}

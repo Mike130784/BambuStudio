@@ -1,6 +1,21 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuwste checkpoint: lokaal camerabeeld geïntegreerd en getest
+## Nieuwste checkpoint: officiële Connect-overdracht geïntegreerd
+
+Windows-build/install **PASS**. Bestand → Exporteren → Open huidige plaat in Bambu Connect... draagt alleen een geldig geslicede huidige plaat over via de publieke URL-interface. Native plaat-export, unieke bewaarde kopie en controle van de Windows-protocolregistratie; geen automatisch Send/Print. De gebruiker heeft Connect zelf geïnstalleerd en aangemeld (**USER PASS**); geïnstalleerde Connect 2.5.0-beta.15 heeft geldige handtekening.
+
+Native contractproeven **11 PASS**. GUI: vóór slicing uitgeschakeld, daarna twee aparte overdrachten, eerste geannuleerd en tweede geïmporteerd. Connect toont P2S, Textured PEI, PLA, 0.4, 1,03 g en afgerond 10m voor ons 9m44s-blok. Vier AMS-slots zichtbaar en voorbereiding van A2 naar A1 gewijzigd; daarna Cancel. **Geen Send, upload of printstart getest.**
+
+Projectbehoud na overdracht **PASS**: mesh, eenheden, scèneverwijzingen/-transformaties, één object en alle projectinstellingen behouden; UUID-only metadata uitgezonderd. Oorspronkelijk testbestand ongewijzigd. Beide G-codepakketten CRC/MD5 PASS. Normale build opnieuw geopend; lokale camerakeuze behouden en Playing bereikt, donkere scène zonder nieuwe beweging-/duurclaim.
+
+- Geteste DLL SHA256: `3D2BF297F5D0EFA91A37FD98584688F809F23E02E07026EC9306C7B7540394D8`; **Authenticode: NotSigned**.
+- Bouwlog `custom-20261105-222505-BuildApp.log`. Vorige camerabuild DLL/launcher apart in `D:\bsc291\custom-before-connect-20261105`; originele baseline behouden.
+- [Gebruiken, bewijs en grenzen](CONNECT-HANDOFF.md); [registratie](evidence/connect-acceptance-2026-11-05.json).
+- Geautomatiseerde opruiming van connect-exports, meerdere platen/materialen, echte print/AMS-wissel en foutinjecties blijven NOT RUN. Directe unsigned print en cloudcamera zijn niet aangepast.
+
+Volgende praktijkpoort: een door de gebruiker gekozen en gestarte kleine print via Connect, inclusief juiste AMS-toewijzing en voltooiing. Tot die proef is volledige printerkwalificatie niet bewezen.
+
+## Eerder checkpoint: lokaal camerabeeld geïntegreerd en getest
 
 De camerabalk bevat nu Camera: automatisch/lokaal met een menu in de bestaande native Bambu-stijl. Automatisch bewaart de oorspronkelijke route; lokaal gebruikt expliciet de bestaande RTSPS-speler, zonder cloudterugval. Omschakelen stopt de oude verbinding en wacht op Afspelen. De keuze wordt per lokale appconfiguratie bewaard. Er is geen eigen codecertificaat gemaakt of printerinstelling gewijzigd.
 

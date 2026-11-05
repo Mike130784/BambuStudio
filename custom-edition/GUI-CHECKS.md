@@ -60,3 +60,9 @@ De camerabalk bevat een keuzeknop Camera: automatisch/lokaal. Automatisch is sta
 6. Controleer de bestaande parametrische editor en een bekende P2S-slice/export. Raak geen echte print-, AMS-, temperatuur- of asbediening aan. Noteer bewijs en NOT RUN per build.
 
 Ontbrekende lokale toegang en uitgeschakelde/niet-ondersteunde liveview moeten een duidelijke foutmelding geven zonder terugval op cloud in de expliciete lokale stand. Deze negatieve printertoestanden worden niet tijdens een lopende print geforceerd. Praktische uitslagen horen in het actuele checkpoint; bovenstaande stappen zijn testcriteria.
+
+## Officiële Connect-overdracht
+
+Gebruik het eigen opgeslagen P2S-blok. Vóór slicing is Bestand → Exporteren → Open huidige plaat in Bambu Connect... uitgeschakeld. Slice en controleer 25 lagen, 1,03 g, 9m44s; open daarna Connect via het menu. Annuleer de eerste import en herhaal: er moet een nieuwe unieke exportkopie komen. Bevestig alleen Import Gcode 3MF. Controleer P2S/0.4/PLA/Textured PEI en 1,03 g in Connect. Print opent de voorbereiding; controleer vier AMS-slots en wijzig alleen de lokale toewijzing. Cancel sluit de proef af. Klik niet op Send zonder een afzonderlijke printopdracht van de gebruiker.
+
+Sla het slicerproject na overdracht onder een nieuwe naam op en vergelijk met verify_project_preservation.py. Bovengenoemde menu/import/voorbereidings-/behoudsproeven zijn op de Connect-build PASS; daadwerkelijke Send/upload/print is NOT RUN. Een ontbrekende Connect-installatie en exportfalen worden alleen als afzonderlijke foutproeven getest, niet door de echte installatie te verwijderen.

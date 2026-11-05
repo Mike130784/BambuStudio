@@ -14,6 +14,10 @@ De renderer draait asynchroon zonder shell, in een eigen Windows Job Object. Slu
 
 De dark-modecorrectie is gebouwd en praktisch gecontroleerd: statusvlakken, fouten, succes, voortgang en knoppen zijn leesbaar; een lichte-moduscontrole is ook PASS. Zie [bewijs](evidence/dark-acceptance-2026-11-05.json). Bambu-accountlogin is afzonderlijk **USER PASS**.
 
+## Printvoorbereiding via Bambu Connect
+
+Slice een plaat en kies **Bestand → Exporteren → Open huidige plaat in Bambu Connect...**. De officiële afzonderlijke Connect-app vraagt importbevestiging; printer, plaat en AMS worden daar gecontroleerd. Onze overdracht start geen print. De menuoptie, import en AMS-voorbereiding zijn praktisch PASS; echte Send/printstart blijft NOT RUN. Zie [gebruik en bewijs](CONNECT-HANDOFF.md). Windows, huidige plaat, Connect afzonderlijk geïnstalleerd; geen eigen codecertificaat nodig voor deze overdracht.
+
 ## Lokale camera
 
 Onder het camerabeeld staat nu **Camera: automatisch/lokaal**. Kies Lokale camera (LAN) en klik Afspelen. Vereist lokale RTSPS-liveview, printeradres en de bestaande toegangscode; de app verandert geen printerinstellingen. Algemene Alleen LAN kan uit blijven, Alleen LAN Liveweergave staat aan op de geteste P2S. De keuze wordt lokaal onthouden; bij omschakelen stopt de oude verbinding en start een nieuwe pas na Afspelen.
