@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-05",
+  "code_commit": "715b3ed0f58c4accc30abc2a33fa7469ecb02c26",
+  "application_version": "02.09.01.70",
+  "cases": {
+    "handy_camera": "USER PASS",
+    "official_installed_camera": "USER PASS, then live frame and Playing state observed by agent",
+    "custom_camera": "FAIL: 1:403, reproduced with camera-only retry",
+    "unchanged_source_baseline_camera": "FAIL: 1:403, observed using the preserved original build",
+    "custom_status_telemetry": "PASS: read-only printer status and AMS slots visible; not hardware control qualification",
+    "clock_check": "PASS: local UTC and unauthenticated Bambu server Date agree to the second",
+    "plugin_authenticode": "PASS: networking and video source DLL signatures Valid",
+    "public_certificate_comparison": "PASS: same X509 thumbprint and no private key; file hash difference is not a different certificate",
+    "camera_network_source_against_upstream": "PASS: MediaPlayCtrl.cpp, NetworkAgent.cpp, wxMediaCtrl3.cpp have no custom changes"
+  },
+  "clock_check": {
+    "local_utc": "2026-11-05T13:24:13.4266369Z",
+    "server_date": "Thu, 05 Nov 2026 13:24:13 GMT",
+    "endpoint": "https://api.bambulab.com",
+    "method": "HEAD without authentication",
+    "http_status": 404,
+    "note": "Connectivity/time check only; this request did not request camera access."
+  },
+  "artifacts": {
+    "official_exe": {
+      "sha256": "73E626FC06484A38F2B26A5E4E21A1A7D80BA2969AD3993D497BC7D21B34A129",
+      "authenticode": "Valid"
+    },
+    "official_dll": {
+      "sha256": "159143038F5E71F8DE0D08E19419B2F4495A8783C82EA4DFCC36F9D77934675D",
+      "authenticode": "Valid"
+    },
+    "baseline_dll": {
+      "sha256": "18A290C5CF2A4C1C7C6063DB74E04BED1391B26E8AD2ACE93E983E3695E62281",
+      "authenticode": "NotSigned"
+    },
+    "custom_dll": {
+      "sha256": "D1688AA69F215A47E890478D9A2C148144F4FF3B896A3487DCA31BF6DDF68953",
+      "authenticode": "NotSigned"
+    },
+    "networking_plugin": {
+      "sha256": "C2D71243A64694BB816EE765D1EDA7745C4E4E51EEF957922E56A3BD20809675",
+      "authenticode": "Valid"
+    },
+    "video_source_plugin": {
+      "sha256": "47CFA5E896644522379325726FECBE7966CE3D8ED84FC4C9822FB87332B4333D",
+      "authenticode": "Valid"
+    }
+  },
+  "public_certificate_thumbprint": "56BE046A75251F95488AFAACF38863A5F9D1FF6A",
+  "conclusion": "Cloud camera failure also affects untouched self-built upstream baseline; not introduced by editor changes. Exact SDK/server denial reason unproven.",
+  "hypothesis": "Software identity/authorization is the leading explanation, supported by signed-versus-unsigned comparison and Bambu whitepaper; not a proven camera-specific root cause.",
+  "camera_source_hashes": {
+    "src/slic3r/GUI/MediaPlayCtrl.cpp": "bd66d54a649c0f8038ae2213edcf40e15ea8cae16d231ec8363f972f8faa6049",
+    "src/slic3r/Utils/NetworkAgent.cpp": "8ce96f4c44b34ab4f769d33df512dab39007645a01bba4a76adb4199995230e8",
+    "src/slic3r/GUI/wxMediaCtrl3.cpp": "fc95403f168b8137ee54939767cbfb0c5329bcf05d14418ffe14aefaa20dfb7f"
+  },
+  "references": [
+    "https://github.com/bambulab/BambuStudio/issues/11405",
+    "https://manuals.plus/m/d042a9ec81608fb3217727d4eeabb08ff00755b5b3b2a78669e25179199e8521"
+  ],
+  "not_run": [
+    "authenticated SDK/server denial diagnostics",
+    "LAN camera connection",
+    "send/start/pause/stop/axis/temperature/material commands from custom build",
+    "full AMS hardware qualification"
+  ],
+  "notes": [
+    "No printer control commands sent, no firmware/network/security changes. Existing print continued.",
+    "No official application identity, private keys or certificates copied; public certificate metadata only compared.",
+    "Encrypted application/network logs not decrypted or uploaded. No device identifiers, IP addresses, account identifiers, access codes, tokens or camera images in this report.",
+    "Official Studio reopened after comparison; final view had a cached frame with a Play button, so continuous live playback after reopen is not claimed."
+  ]
+}

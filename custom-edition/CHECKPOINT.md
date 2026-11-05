@@ -1,6 +1,12 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuwste checkpoint: dark mode hersteld
+## Nieuwste checkpoint: camera blijft geblokkeerd in eigen builds
+
+Cloud-livebeeld geeft **FAIL: 1:403** in de custom build én in de apart bewaarde ongewijzigde upstream-build. Officiële Studio van dezelfde release toont livebeeld (USER PASS en agentwaarneming); Handy is USER PASS. Daarmee is de fout onafhankelijk van de editorwijzigingen gereproduceerd. Software-identiteit/autorisatie is een onderbouwde hypothese, geen bewezen specifieke oorzaak of opgeloste fout.
+
+Zie [diagnose en vervolgstappen](CAMERA-DIAGNOSTIC.md) en [geschoond bewijs](evidence/camera-diagnostic-2026-11-05.json). Status en AMS-slots zijn alleen-lezen zichtbaar; volledige hardwarekwalificatie blijft open. Geen productcode of printerinstellingen gewijzigd. De bestaande print bleef doorgaan. Geen nieuwe build nodig voor deze documentatie. H07-livebeeld is een expliciete kwalificatieblokkade.
+
+## Eerder checkpoint: dark mode hersteld
 
 De editor gaf in donkere modus lichte Windows-achtergronden onder de statuslabels. De eigen StaticBox-tekenkleur was al donker, maar de native labelachtergrond niet. Die achtergronden worden nu expliciet gelijkgezet. Ook afgeronde hoeken en scheidingslijnen passen bij het thema. Succes-/foutkoppen hebben in dark mode lichtere tinten; uitgeschakelde knopteksten zijn beter leesbaar.
 

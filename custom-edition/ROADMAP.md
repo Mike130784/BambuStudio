@@ -31,6 +31,8 @@ De huidige UI-stap omvat een Bambu-stijlvenster, lokaal onthouden renderer/model
 
 Geen uitbreiding van P1 start voordat P0b een werkende originele build oplevert. Live hardwaretests blijven apart: ze kunnen niet door een compilatie worden vervangen. Tot P0c is afgerond blijft printercompatibiliteit onbewezen en komt er geen custom printrelease.
 
+Cameraonderzoek 5 november: status en AMS-slots zijn alleen-lezen zichtbaar; H01/H02 zijn daarmee nog geen volledige hardwarekwalificatie. Cloudcamera faalt ook in de originele eigen build. [H07-diagnose](CAMERA-DIAGNOSTIC.md) blijft een blokkade voor printergerichte vrijgave.
+
 ## Testmatrix
 
 Gebruik steeds dezelfde voorbeeldprojecten, dezelfde profielen en dezelfde printerfirmware. Leg de originele baseline en de custom build naast elkaar vast. Noteer verwacht/werkelijk resultaat, log/screenshot, versie, datum en uitvoerder. Statuswaarden: PASS, FAIL, NOT RUN.
@@ -49,6 +51,7 @@ Gebruik steeds dezelfde voorbeeldprojecten, dezelfde profielen en dezelfde print
 | H03 | Filamentmapping | Twee materialen aan juiste AMS-slots gekoppeld; wissels zichtbaar in preview |
 | H04 | Laden/lossen | Praktische test op echte printer; resultaat bevestigen met gebruiker |
 | H05 | Drogen/vochtigheid | Alleen functies die de echte P2S/firmwarecombinatie aanbiedt; met baseline vergelijken |
+| H07 | Livebeeld | Starten, stoppen en opnieuw verbinden via een ondersteunde route in de custom build; momenteel FAIL: 1:403 |
 | H06 | Kleine testprint | Werkelijke start, materiaalwissel en voltooiing; printen uitsluitend met expliciete opdracht |
 | E01 | Parametereffect | Blokbreedte 20→30 mm; gemeten afwijking maximaal 0,05 mm |
 | E02 | Parser/validatie | Getal/bool/tekst/keuze correct; unsupported/ongeldige invoer duidelijke melding |
@@ -59,4 +62,4 @@ Gebruik steeds dezelfde voorbeeldprojecten, dezelfde profielen en dezelfde print
 | E07 | Uitgeschakelde editor | Oorspronkelijke import/slicing/opslaan en AMS-flow behouden |
 | P01 | Profielanalyse later | Ouders/cycli/ontbrekende sleutels correct; originele profielen bytegelijk |
 
-Voor de eerste lokale editorproef zijn B01–B04 vereist. Voor een printergerichte custom release zijn ook B05–B07 en H01–H06 vereist, met niet-ondersteunde hardwarefuncties expliciet gemotiveerd. Er worden geen live printertests als PASS ingevuld op basis van broncode.
+Voor de eerste lokale editorproef zijn B01–B04 vereist. Voor een printergerichte custom release zijn ook B05–B07 en H01–H07 vereist, met niet-ondersteunde hardwarefuncties expliciet gemotiveerd. Er worden geen live printertests als PASS ingevuld op basis van broncode.

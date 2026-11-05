@@ -26,7 +26,8 @@ De dark-modecorrectie is gebouwd en praktisch gecontroleerd: statusvlakken, fout
 - Parametrisch blok op een lege plaat genereren/plaatsen/slicen/exporteren: **PASS**. Exact één object van 30×10×5 mm, 25 lagen, 1,03 g en 9m44s totaal; export-CRC en G-code-MD5 gecontroleerd.
 - Ontbrekende renderer, syntaxisfout en leeg model via de GUI: **PASS**. Echte GUI-time-out met een gecontroleerde wachtprobe: **PASS**, proces beëindigd na 60,097 s, geen STL en plaatsen geblokkeerd. De probe is geen OpenSCAD; beide echte SCAD-fouten zijn wel met OpenSCAD getest. Zie [aanvullend foutenbewijs](evidence/failure-acceptance-2026-11-05.json).
 - Project-/plaatwissel via een andere instantie tijdens render: **NOT RUN**; de dedicated testconfiguratie heeft `single_instance=false`. De gewone modale editor blokkeert wijzigingen in het eigen hoofdvenster.
-- Werkelijke P2S/AMS 2 Pro-verbinding, materiaalwissels, drogen en testprint: **NOT RUN**. Aanwezige bronondersteuning en een build bewijzen geen hardwarecompatibiliteit.
+- P2S-status en AMS-slots zijn alleen-lezen zichtbaar. Materiaalwissels, drogen en custom testprint: **NOT RUN**; volledige hardwarekwalificatie blijft open.
+- Cloudcamera: **FAIL: 1:403** in custom én ongewijzigde eigen upstream-build. Officiële Studio toont livebeeld (USER PASS en agentwaarneming); Handy USER PASS. Zie [diagnose](CAMERA-DIAGNOSTIC.md). Cameracompatibiliteit is niet opgelost.
 
 De nieuwe Bambu-interface, padherstel na herstart, contextmenu's en slice-/stopregressie zijn opnieuw **PASS**; zie [UI-bewijs](evidence/ui-acceptance-2026-11-05.json). Donker thema is inmiddels getest; extra DPI-schalen blijven **NOT RUN**.
 
