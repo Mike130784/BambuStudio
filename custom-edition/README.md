@@ -14,6 +14,12 @@ De renderer draait asynchroon zonder shell, in een eigen Windows Job Object. Slu
 
 De dark-modecorrectie is gebouwd en praktisch gecontroleerd: statusvlakken, fouten, succes, voortgang en knoppen zijn leesbaar; een lichte-moduscontrole is ook PASS. Zie [bewijs](evidence/dark-acceptance-2026-11-05.json). Bambu-accountlogin is afzonderlijk **USER PASS**.
 
+## Lokale camera
+
+Onder het camerabeeld staat nu **Camera: automatisch/lokaal**. Kies Lokale camera (LAN) en klik Afspelen. Vereist lokale RTSPS-liveview, printeradres en de bestaande toegangscode; de app verandert geen printerinstellingen. Algemene Alleen LAN kan uit blijven, Alleen LAN Liveweergave staat aan op de geteste P2S. De keuze wordt lokaal onthouden; bij omschakelen stopt de oude verbinding en start een nieuwe pas na Afspelen.
+
+Lokaal gedecodeerd beeld, minimaal twee minuten observatie, stop/start, routewissel en appherstart zijn **PASS**. Handy en beweging zijn afzonderlijk **USER PASS**. Getest op P2S 01.03.00.00; dit is geen algemene cloud- of printautorisatiefix. [Bewijs en beperkingen](evidence/local-camera-acceptance-2026-11-05.json).
+
 ## Status op 5 november 2026
 
 - Originele Windows-build, appstart en P2S-kubus slice/export: **PASS**.
@@ -27,7 +33,7 @@ De dark-modecorrectie is gebouwd en praktisch gecontroleerd: statusvlakken, fout
 - Ontbrekende renderer, syntaxisfout en leeg model via de GUI: **PASS**. Echte GUI-time-out met een gecontroleerde wachtprobe: **PASS**, proces beëindigd na 60,097 s, geen STL en plaatsen geblokkeerd. De probe is geen OpenSCAD; beide echte SCAD-fouten zijn wel met OpenSCAD getest. Zie [aanvullend foutenbewijs](evidence/failure-acceptance-2026-11-05.json).
 - Project-/plaatwissel via een andere instantie tijdens render: **NOT RUN**; de dedicated testconfiguratie heeft `single_instance=false`. De gewone modale editor blokkeert wijzigingen in het eigen hoofdvenster.
 - P2S-status en AMS-slots zijn alleen-lezen zichtbaar. Materiaalwissels, drogen en custom testprint: **NOT RUN**; volledige hardwarekwalificatie blijft open.
-- Cloudcamera: **FAIL: 1:403** in custom én ongewijzigde eigen upstream-build. Officiële Studio toont livebeeld (USER PASS en agentwaarneming); Handy USER PASS. Zie [diagnose](CAMERA-DIAGNOSTIC.md). Cameracompatibiliteit is niet opgelost.
+- Cloudcamera: **FAIL: 1:403** in custom én ongewijzigde eigen upstream-build. Officiële Studio toont livebeeld (USER PASS en agentwaarneming); Handy USER PASS. Zie [diagnose](CAMERA-DIAGNOSTIC.md). De nieuwe expliciete lokale route is inmiddels praktisch PASS; de cloudroute blijft onopgelost.
 
 De nieuwe Bambu-interface, padherstel na herstart, contextmenu's en slice-/stopregressie zijn opnieuw **PASS**; zie [UI-bewijs](evidence/ui-acceptance-2026-11-05.json). Donker thema is inmiddels getest; extra DPI-schalen blijven **NOT RUN**.
 
@@ -35,6 +41,6 @@ Zie [actueel checkpoint](CHECKPOINT.md), [Windows bouwen](BUILD-WINDOWS.md), [ro
 
 ## Herkomst en grenzen
 
-De aangeleverde Bambu-ZIP (02.08.01.55) is afzonderlijk geverifieerd; de ontwikkelbranch gebruikt bewust de nieuwere officiële 2.9.1-release. De originele build is vóór editorwijzigingen apart bewaard. Alleen de GUI-editor, het menu en de bouwlijst zijn functioneel gewijzigd; deze map bevat de aanvullende projectdocumentatie en eigen voorbeelden/tests.
+De aangeleverde Bambu-ZIP (02.08.01.55) is afzonderlijk geverifieerd; de ontwikkelbranch gebruikt bewust de nieuwere officiële 2.9.1-release. De originele build is vóór editorwijzigingen apart bewaard. De functionele wijzigingen betreffen de GUI-editor, menu/bouwlijst en de expliciete lokale camerakeuze; deze map bevat de aanvullende projectdocumentatie en eigen voorbeelden/tests.
 
 Helio Slicer Presets Studio 0.4.2 blijft inspiratie voor later presetbeheer: in de upload werd geen projectlicentie gevonden en er is geen code overgenomen. Materializr is alleen onderzocht als inspiratie; ook daaruit is geen code overgenomen. Er wordt geen toegang tot beschermde MakerWorld-cloudgeneratoren of automatisch distributierecht voor de niet-vrije Bambu-netwerkplug-in verondersteld. OpenSCAD wordt afzonderlijk aangeroepen en niet meegebundeld.

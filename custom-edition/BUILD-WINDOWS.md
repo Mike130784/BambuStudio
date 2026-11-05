@@ -63,3 +63,9 @@ D:\bsc-custom\test-render-job.exe C:\tools\openscad\openscad.com C:\src\BambuStu
 ```
 
 `parameters.json`: `{"fileFormatVersion":"1","parameterSets":{"custom":{"width":"30","depth":"10","height":"5"}}}`. De test controleert echte renderuitvoer, ontbrekende renderer, foutieve/lege geometrie, argumentquoting en stoppen van eigen ouder-/kindprocessen. Meet daarnaast de resulterende STL: 30×10×5 mm, maximaal 0,05 mm afwijking. Dit vervangt geen GUI- of printertest.
+
+## Incrementele custom bouw en lokale camera
+
+De projecthelper buiten deze bronmap bouwt de bestaande BambuStudio-target en installeert daarna met CMake --install naar de aparte custom-installatie. De definitieve camerabuild gebruikte dezelfde configuratie en dependencies als de oorspronkelijke releasebaseline. Sluit de custom app voordat de eigen DLL wordt vervangen; behoud de aparte oorspronkelijke baseline. Een wijziging in MediaPlayCtrl.h kan veel GUI-bestanden opnieuw laten compileren.
+
+De camerakeuze gebruikt alleen bestaande wxWidgets/Bambu-speleronderdelen; er is geen extra library, helperproces of codecertificaat nodig. Bewijs hoort altijd bij de daadwerkelijk geïnstalleerde DLL-hash. De definitieve Windows-build van 5 november staat in evidence/local-camera-acceptance-2026-11-05.json; runtime op andere platforms blijft NOT RUN.

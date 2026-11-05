@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-05",
+  "base_commit": "56a57d00a591360cf41bf21383915ee5bf357be5",
+  "parent_commit": "253457228a385429a48633a586200ab3f0395268",
+  "dll_sha256": "1E11AF23AA3184F0A773A78FCFC24E8FB6A512AC24EB98502CD05728A009548D",
+  "authenticode": "NotSigned",
+  "build_log": "custom-20261105-215602-BuildApp.log",
+  "build_install": "PASS",
+  "source_hashes": {
+    "src/slic3r/GUI/MediaPlayCtrl.cpp": "154ff0a4af56a23a005d8b9fd4b154d8d833449e16461848b9aa9d5c99db8cb7",
+    "src/slic3r/GUI/MediaPlayCtrl.h": "2007f5ec449e5659b63f8784d43e4ea0cdb0ce893006674c5fdca4643b330eaf",
+    "src/slic3r/GUI/Parametric/ParametricEditor.cpp": "aa7bc4ee794fac991fa1a7b940af243b960edfcb446a0447549088b8acc0b319",
+    "src/slic3r/GUI/Parametric/WindowsRenderJob.hpp": "0de847766e4abf40cb06be5c6478bc7cdaabf813f9e143e5e16023415a04f4f0"
+  },
+  "cases": {
+    "default_automatic_choice": "PASS",
+    "select_local_requires_explicit_play": "PASS",
+    "local_decoded_picture_in_custom_app": "PASS: Live overlay and Playing, decoded printer image",
+    "two_minute_observation": "PASS: Playing and fresh decoded frames at start and after at least 120 seconds; intermittent observations, no dropout observed",
+    "stop_start": "PASS: stopped to idle background, then decoded live picture again",
+    "automatic_local_roundtrip": "PASS: switching stops old route and requires Play; automatic cloud path still FAIL 1:403; returning to Local restores decoded live picture",
+    "restart_preference": "PASS: app fully closed and reopened; Camera: local retained, explicit Play restores live picture",
+    "editor_regression": "PASS: empty dark editor, Customizer fixture loaded, width 30 rendered as 30x10x5 mm; Place enabled; no placement or project edits performed",
+    "slice_regression": "PASS: offline CLI slice/export of saved known P2S block project; return_code 0, 25 layers, 1.03 g, 9m44s, archive CRC and G-code MD5 PASS",
+    "handy": "USER PASS: Handy works and motion visible; user also confirms live image in Studio"
+  },
+  "not_run": [
+    "forced network disconnection",
+    "printer liveview disabled/missing credentials negative runtime cases",
+    "extra DPI scales",
+    "non-Windows build",
+    "complete safety/Undo/3MF project preservation suite repeated on this camera build",
+    "long-duration camera soak and recovery from router/printer power cycle",
+    "runtime clipboard-export guard; source reviewed only"
+  ],
+  "notes": [
+    "No print, AMS, temperature, axis or firmware commands sent.",
+    "No printer settings, code certificates or Windows trust settings changed.",
+    "Reuses existing camera decoder and local RTSPS tunnel; no new TLS certificate validation implementation.",
+    "No access codes, device IDs, IP addresses, stream URLs or camera images published.",
+    "Previous tested DLL and launcher preserved in separate local checkpoint.",
+    "Final observed UI left on Device with local live decoded picture and Playing after restart.",
+    "Route preference saved in custom_camera/local_only; editor fixture and renderer selected explicitly in normal local profile.",
+    "No new TLS implementation or changes to the existing decoder certificate behavior.",
+    "No cloud camera fix or direct print authorization fix claimed."
+  ],
+  "camera_observation_start_utc": "2026-11-05T20:58:50Z",
+  "minimum_observation_seconds": 120,
+  "slice": {
+    "fixture": "customizer-block30-p2s-20261105.3mf",
+    "return_code": 0,
+    "layers": 25,
+    "filament_g": 1.03,
+    "total_estimated_time": "9m44s",
+    "zip_crc": "PASS",
+    "gcode_md5": "PASS",
+    "gcode_md5_value": "0111bd6cca668f1b498c5acb8f92436e",
+    "archive_sha256": "f3d64f73fede7e8c65492831cf5d4687416756b63cf26ad3c83de11f369f337f",
+    "fixture_sha256": "4c0fd0663673d2dc4d65ab3342e6b16d9ef1ff9543cda65012ca59aa77f9269c"
+  },
+  "source_audit": "PASS: only explicitly allowed custom changes against pinned upstream",
+  "diff_whitespace_check": "PASS"
+}

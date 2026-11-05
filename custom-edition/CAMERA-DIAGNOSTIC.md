@@ -1,6 +1,10 @@
 # Cameraonderzoek — 5 november 2026
 
-## Uitkomst
+## Actuele uitkomst
+
+De expliciete lokale RTSPS-route is inmiddels ingebouwd en op P2S 01.03.00.00 getest: gedecodeerd livebeeld, minimaal twee minuten waarnemingen, stop/start, routewissel en herstel na appherstart **PASS**; Handy en beweging **USER PASS**. [Buildspecifiek bewijs](evidence/local-camera-acceptance-2026-11-05.json). De cloud-403 en printautorisatie blijven afzonderlijk open. De onderstaande eerste diagnose en proeven beschrijven de eerdere checkpoints.
+
+## Eerdere clouddiagnose
 
 Cloud-livebeeld is **FAIL: 1:403** in zowel onze custom build als de apart bewaarde, ongewijzigde zelfgebouwde upstream-baseline. De officiële geïnstalleerde Bambu Studio toont wel livebeeld. De editorwijzigingen zijn dus niet nodig om deze fout te reproduceren. De exacte afwijzingsreden in de gesloten netwerkplug-in/server is nog niet bewezen; dit onderzoek levert geen camerafix op.
 

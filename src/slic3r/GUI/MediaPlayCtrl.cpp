@@ -30,6 +30,7 @@
 #endif
 
 #include <wx/clipbrd.h>
+#include <wx/menu.h>
 #include "wx/evtloop.h"
 #include <wx/dcgraph.h>
 #include <wx/mstream.h>
@@ -135,6 +136,41 @@ MediaPlayCtrl::MediaPlayCtrl(wxWindow *parent, wxMediaCtrl3 *media_ctrl, const w
         delete ss;
     });
     m_media_ctrl->SetIdleImage(from_u8(resources_dir() + "/images/liveview_bg.png"));
+
+    // This selects a camera transport only; it never changes printer LAN mode.
+    m_local_camera_only = wxGetApp().app_config->get("custom_camera", "local_only") == "true";
+    const bool dutch = wxGetApp().current_language_code_safe().rfind("nl", 0) == 0;
+    auto route_label = [dutch](bool local) -> wxString {
+        return dutch ? (local ? "Camera: lokaal" : "Camera: automatisch")
+                     : (local ? "Camera: local" : "Camera: automatic");
+    };
+    m_button_camera_route = new Button(this, route_label(m_local_camera_only), "", wxBORDER_NONE);
+    m_button_camera_route->SetToolTip(dutch
+        ? "Kies de cameraverbinding. Lokaal vereist LAN-liveweergave op de printer; Alleen LAN mag uit blijven."
+        : "Choose camera connection. Local requires printer LAN Liveview; LAN Only can stay off.");
+    m_button_camera_route->Bind(wxEVT_COMMAND_BUTTON_CLICKED, [this, dutch, route_label](auto&) {
+        wxMenu menu;
+        auto* automatic = menu.AppendRadioItem(wxID_ANY, dutch ? "Automatisch (origineel)" : "Automatic (original)");
+        auto* local = menu.AppendRadioItem(wxID_ANY, dutch ? "Lokale camera (LAN)" : "Local camera (LAN)");
+        automatic->Check(!m_local_camera_only);
+        local->Check(m_local_camera_only);
+        auto select = [this, dutch, route_label](bool local_only) {
+            if (local_only == m_local_camera_only) return;
+            // Stop the old transport first. Switching routes requires an explicit Play.
+            m_next_retry = wxDateTime();
+            Stop();
+            m_local_camera_only = local_only;
+            m_disable_lan = false;
+            m_failed_retry = 0;
+            wxGetApp().app_config->set("custom_camera", "local_only", local_only ? "true" : "false");
+            m_button_camera_route->SetLabel(route_label(local_only));
+            SetStatus(dutch ? "Klik op afspelen om de camera te verbinden." : "Press Play to connect the camera.", false);
+            Layout();
+        };
+        menu.Bind(wxEVT_MENU, [select](wxCommandEvent&) { select(false); }, automatic->GetId());
+        menu.Bind(wxEVT_MENU, [select](wxCommandEvent&) { select(true); }, local->GetId());
+        PopupMenu(&menu);
+    });
 
     m_button_play = new Button(this, "", "media_play", wxBORDER_NONE);
     m_button_play->SetCanFocus(false);
@@ -249,6 +285,7 @@ MediaPlayCtrl::MediaPlayCtrl(wxWindow *parent, wxMediaCtrl3 *media_ctrl, const w
     });
 
     Bind(wxEVT_RIGHT_UP, [this](auto & e) {
+        if (m_local_camera_only) return; // Local URLs contain private printer credentials.
         wxClipboard & c = *wxTheClipboard;
         if (c.Open()) {
             if (wxGetKeyState(WXK_SHIFT)) {
@@ -271,6 +308,7 @@ MediaPlayCtrl::MediaPlayCtrl(wxWindow *parent, wxMediaCtrl3 *media_ctrl, const w
     sizer->Add(m_label_status, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(5));
     sizer->Add(m_label_stat, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(25));
     sizer->AddStretchSpacer(1);
+    sizer->Add(m_button_camera_route, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
     sizer->Add(m_button_camera_switch, 0, wxEXPAND | wxRIGHT, FromDIP(10));
     sizer->Add(m_button_fullscreen, 0, wxEXPAND | wxRIGHT, FromDIP(15));
     SetSizer(sizer);
@@ -583,8 +621,23 @@ void MediaPlayCtrl::Play()
 
     NetworkAgent *agent = wxGetApp().getAgent();
     std::string  agent_version = agent ? agent->get_version() : "";
-    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_proto) && !m_disable_lan && !m_lan_ip.empty()) {
-        m_disable_lan = m_remote_proto && !m_lan_mode; // try remote next time
+    if (m_local_camera_only) {
+        const bool dutch = wxGetApp().current_language_code_safe().rfind("nl", 0) == 0;
+        wxString error;
+        if (m_lan_proto <= MachineObject::LVL_Disable)
+            error = dutch ? "Schakel Alleen LAN Liveweergave in op het printerscherm." : "Enable LAN Only Liveview on the printer screen.";
+        else if (m_lan_proto != MachineObject::LVL_Rtsps)
+            error = dutch ? "Deze lokale camerakeuze vereist een RTSPS-camera." : "This local camera option requires an RTSPS camera.";
+        else if (m_lan_ip.empty() || m_lan_passwd.empty())
+            error = dutch ? "Lokaal printeradres of toegangscode ontbreekt. Verbind de printer op dit netwerk." : "Local printer address or access code missing. Connect the printer on this network.";
+        if (!error.empty()) {
+            m_next_retry = wxDateTime();
+            Stop(error);
+            return;
+        }
+    }
+    if (m_lan_proto > MachineObject::LVL_Disable && (m_local_camera_only || m_lan_mode || !m_remote_proto) && !m_disable_lan && !m_lan_ip.empty()) {
+        m_disable_lan = !m_local_camera_only && m_remote_proto && !m_lan_mode; // automatic mode may try remote next time
         std::string url;
         if (m_lan_proto == MachineObject::LVL_Local)
             url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
@@ -961,6 +1014,7 @@ void MediaPlayCtrl::ToggleStream()
 }
 
 void MediaPlayCtrl::msw_rescale() {
+    m_button_camera_route->Rescale();
     m_button_play->Rescale();
     m_button_camera_switch->Rescale();
     m_button_fullscreen->Rescale();

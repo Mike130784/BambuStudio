@@ -132,6 +132,7 @@ private:
     int m_remote_proto = 0;
     bool m_device_busy = false;
     bool m_disable_lan = false;
+    bool m_local_camera_only = false;
     wxString m_url;
 
     std::deque<wxString> m_tasks;
@@ -161,6 +162,7 @@ private:
     std::chrono::steady_clock::time_point m_image_last_success_time;
     std::string m_image_last_machine;
 
+    ::Button *m_button_camera_route;
     ::Button *m_button_play;
     ::Button *m_button_camera_switch;
     ::Button *m_button_fullscreen;

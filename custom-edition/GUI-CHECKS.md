@@ -47,3 +47,16 @@ Zie [scope en reproduceerbare controles](CUSTOMIZER.md) en [buildspecifieke acce
 ## Dark-modecorrectie
 
 Controleer in dark mode de lege status, geladen modelvelden, een invoerfout, geslaagde render, voortgang/stoppen en de uitgeschakelde plaatsknop. Er mogen geen lichte native labelvlakken in de donkere statuskaart staan. De native Windows-voortgangsbalk is bewust behouden. Controleer daarnaast de lege editor in light mode. Buildspecifieke resultaten staan in [dark-modeacceptatie](evidence/dark-acceptance-2026-11-05.json); een live themawissel en andere DPI-schalen blijven apart.
+
+## Lokale camerakeuze — nieuwe build afzonderlijk kwalificeren
+
+De camerabalk bevat een keuzeknop Camera: automatisch/lokaal. Automatisch is standaard en bewaart de oorspronkelijke transportselectie. Lokaal vereist dat de printer RTSPS-liveview aanbiedt, op hetzelfde netwerk bereikbaar is en zijn bestaande toegangscode beschikbaar is. Deze appkeuze verandert geen printerinstellingen. Algemene Alleen LAN mag uit blijven; Alleen LAN Liveweergave moet aan staan.
+
+1. Open Device met de gekozen P2S. Open de camerakeuze en kies Lokale camera (LAN). Een lopende oude verbinding moet stoppen. Alleen kiezen mag geen nieuwe verbinding starten; klik daarvoor Afspelen.
+2. Controleer werkelijk bewegend beeld en laat minimaal twee minuten afspelen. Een Playing-label of een stilstaand oud frame alleen is onvoldoende bewijs.
+3. Stop en start de camera opnieuw. Wissel naar Automatisch en terug naar Lokaal; geen dubbele verbindingen of oude cloudcallbacks die lokaal beeld vervangen. Een ongewijzigde cloud-403 mag nog bestaan en moet afzonderlijk blijven geregistreerd.
+4. Controleer camerakeuze na appherstart. De instelling bewaart alleen de routekeuze; toegangscode blijft in de bestaande printerconfiguratie en verschijnt niet in de nieuwe keuzeknop of bewijsbestanden. De lokale route mag de private URL niet via het oude rechtermuisknop-klembordhulpmiddel exporteren.
+5. Controleer Handy afzonderlijk met de gebruiker; claim geen behoud op basis van Alleen LAN uit alleen.
+6. Controleer de bestaande parametrische editor en een bekende P2S-slice/export. Raak geen echte print-, AMS-, temperatuur- of asbediening aan. Noteer bewijs en NOT RUN per build.
+
+Ontbrekende lokale toegang en uitgeschakelde/niet-ondersteunde liveview moeten een duidelijke foutmelding geven zonder terugval op cloud in de expliciete lokale stand. Deze negatieve printertoestanden worden niet tijdens een lopende print geforceerd. Praktische uitslagen horen in het actuele checkpoint; bovenstaande stappen zijn testcriteria.

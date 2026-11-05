@@ -1,6 +1,21 @@
 # Checkpoint — donderdag 5 november 2026
 
-## Nieuwste checkpoint: lokale cameraverbinding praktisch PASS
+## Nieuwste checkpoint: lokaal camerabeeld geïntegreerd en getest
+
+De camerabalk bevat nu Camera: automatisch/lokaal met een menu in de bestaande native Bambu-stijl. Automatisch bewaart de oorspronkelijke route; lokaal gebruikt expliciet de bestaande RTSPS-speler, zonder cloudterugval. Omschakelen stopt de oude verbinding en wacht op Afspelen. De keuze wordt per lokale appconfiguratie bewaard. Er is geen eigen codecertificaat gemaakt of printerinstelling gewijzigd.
+
+Windows-build/install **PASS**. Werkelijk gedecodeerd lokaal beeld, waarnemingen over minimaal twee minuten, stoppen/starten, terugschakelen na de bekende automatische cloud-403 en herstel na een volledige appherstart: **PASS**. Handy en zichtbare beweging zijn afzonderlijk **USER PASS**; de gebruiker bevestigde ook livebeeld in Studio. De laatste agentwaarneming laat Device met lokaal livebeeld en Playing achter.
+
+Editorcontrole: eigen Customizer-blok naar 30x10x5 mm renderen **PASS**, zonder plaatsactie of projectwijziging. Offline slice/export van het bekende opgeslagen P2S-blok: **PASS**, 25 lagen, 1,03 g, 9m44s, archief-CRC en G-code-MD5 goed. Dit is een gerichte regressie; de volledige eerdere Undo/fout/3MF-suite is niet opnieuw uitgevoerd.
+
+- Geteste DLL SHA256: `1E11AF23AA3184F0A773A78FCFC24E8FB6A512AC24EB98502CD05728A009548D`; **Authenticode: NotSigned**.
+- Definitief bouwlog: `custom-20261105-215602-BuildApp.log`; de eerste brede bouw staat in `custom-20261105-213654-BuildApp.log`. De knop-schaalcorrectie is in de definitieve incrementele build meegenomen.
+- [Buildspecifiek bewijs](evidence/local-camera-acceptance-2026-11-05.json). Laatst geteste eerdere DLL/launcher apart in `D:\bsc291\custom-before-local-camera-20261105`; oorspronkelijke baseline ongewijzigd bewaard.
+- Alleen P2S 01.03.00.00 op het huidige netwerk gekwalificeerd. Geforceerde netwerkuitval, uitgeschakelde camera/ontbrekende credentials, extra DPI, andere OS'en en langdurige duurproef: **NOT RUN**. De bestaande decoder en zijn TLS-gedrag zijn hergebruikt; geen onafhankelijke certificaatvalidatie toegevoegd of uitgezet.
+
+Cloudcamera blijft **FAIL: 1:403** en rechtstreeks printen blijft door de getoonde applicatie-autorisatie geblokkeerd. Geen printer-, AMS-, firmware-, temperatuur- of asopdrachten verzonden. De volgende aparte compatibiliteitsstap is de ondersteunde Bambu Connect-route voor P2S/AMS onderzoeken en testen; lokale liveview lost printautorisatie niet op.
+
+## Eerder checkpoint: lokale cameraverbinding praktisch PASS
 
 P2S 01.03.00.00: algemene Alleen LAN uit en aparte Alleen LAN Liveweergave aan, bevestigd met gebruikersfoto. Een afzonderlijke geauthenticeerde lokale RTSP(S)-proef geeft DESCRIBE/SETUP/PLAY 200 en 604 RTP-videopakketten in drie seconden. Geen printerbesturingsopdrachten of instellingen gewijzigd. Geen codecertificaat nodig voor deze verbinding. Decoder/integratie, stabiliteit en herverbinden blijven NOT RUN. Camera-servercertificaat is in deze geïsoleerde proef niet onafhankelijk gevalideerd; geen wijziging in Windows-vertrouwen. Printautorisatie blijft apart open. Zie [bewijs en grenzen](CAMERA-DIAGNOSTIC.md).
 
