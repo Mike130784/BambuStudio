@@ -1,3 +1,11 @@
+# Checkpoint 6 november — directe LAN-start en certificaatonderzoek
+
+Gebruiker heeft op de printer LAN Only, LAN-liveweergave en Developer Mode ingeschakeld en opnieuw verbonden. Automatic-camera en directe printdispatch/voorbereiding uit onze custom build: USER PASS. Screenshot toont Homing toolhead, 0/400 lagen. Printvoltooiing en fysieke AMS-wissels blijven NIET BEVESTIGD. Handy valt in deze printermodus weg.
+
+Onderzoek naar eigen certificaten met Handy behouden: aparte checkout Open Bamboo Networking 95d42f8 en OpenBambuAPI cc383a2. Eigen offline testcode en upstream signing-code gebouwd; 2/2 native testprogramma's geslaagd, met 21 signing-subproeven en 5 eigen X.509-controles. Herproductie via opgeslagen script PASS. Geen werkende hybride printfix, geen alternatieve DLL geïnstalleerd, geen printeropdrachten of truststorewijzigingen tijdens dit onderzoek. [Volledig onderzoek en grenzen](CERTIFICATE-RESEARCH.md).
+
+---
+
 # Checkpoint — donderdag 5 november 2026
 
 ## Nieuwste checkpoint: officiële Connect-overdracht geïntegreerd

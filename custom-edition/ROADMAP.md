@@ -63,3 +63,7 @@ Gebruik steeds dezelfde voorbeeldprojecten, dezelfde profielen en dezelfde print
 | P01 | Profielanalyse later | Ouders/cycli/ontbrekende sleutels correct; originele profielen bytegelijk |
 
 Voor de eerste lokale editorproef zijn B01–B04 vereist. Voor een printergerichte custom release zijn ook B05–B07 en H01–H07 vereist, met niet-ondersteunde hardwarefuncties expliciet gemotiveerd. Er worden geen live printertests als PASS ingevuld op basis van broncode.
+
+## 6 november: eigenaarstest en onderzoek hybride printen
+
+Directe LAN-printdispatch en Automatic-camera USER PASS na LAN Only + Developer Mode. Handy hierdoor niet beschikbaar. Eigen certificaat/software-ondertekening offline onderzocht (2/2 programma's PASS); geen eigenaar-rootregistratie gevonden en geen hybride printfix opgeleverd. Zie CERTIFICATE-RESEARCH.md. Printvoltooiing, fysieke AMS-wissels en hardwareacceptatie van eigen certificaten blijven afzonderlijk onbewezen.

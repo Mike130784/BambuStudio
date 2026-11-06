@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-06",
+  "obn_commit": "95d42f8a9793ec77b933dea62f6153ba3541b562",
+  "protocol_commit": "cc383a2c96576a9f53391c879acfb8dca5c534e4",
+  "studio_commit": "62d2a65faa99667fec1037b7196617b6130664f5",
+  "build": "PASS: MSVC x64; only two offline executables",
+  "openssl": "3.1.2",
+  "tests": {
+    "ctest": "2/2 PASS",
+    "upstream_signing_subcases": "21 PASS",
+    "own_x509_trust_checks": "5 PASS"
+  },
+  "scope": "Offline cryptography and standard chain-validation model; not printer firmware or its exact trust store",
+  "hardware_own_certificate": "NOT RUN",
+  "cloud_custom_identity": "NOT RUN",
+  "full_network_plugin_build": "NOT RUN",
+  "live_printer_commands_sent": false,
+  "production_changes": false,
+  "vendor_private_credentials_used": false,
+  "desired_hybrid_solution": "NOT ACHIEVED",
+  "user_evidence": {
+    "direct_lan_dispatch_and_preparation": "USER PASS",
+    "automatic_camera": "USER PASS",
+    "completed_lan_print": "NOT CONFIRMED",
+    "physical_ams_switch": "NOT CONFIRMED"
+  },
+  "public_ca_bundle_sha256": "36f2bcee347ec7adce719b5fd350099591a4d3d0ec4e039c7019890d78e152a0",
+  "own_sources": {
+    "build-offline.ps1": "3e6e0a287b598e66a32baf98e0addaab42c769a5c521a594c6efc91a54e182c8",
+    "certificate_trust_lab.cpp": "dd10d203090e904f7c97add14c21a2f359dc13bac2e4a2fef43ae0b7b3caf47f",
+    "CMakeLists.txt": "8ce5a89eb655a52662669d6af5763f69ab17cc4a35258a09b8aa9faa203513dd"
+  },
+  "reproduction_build_script": "PASS: fresh second build directory, 2/2 tests"
+}
